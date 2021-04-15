@@ -1,0 +1,10 @@
+C:\Users\DMonolit\source\repos\SymmetricCryptography\bin\Release\SymmetricCryptography.exe.config
+C:\Users\DMonolit\source\repos\SymmetricCryptography\bin\Release\SymmetricCryptography.exe
+C:\Users\DMonolit\source\repos\SymmetricCryptography\bin\Release\SymmetricCryptography.pdb
+C:\Users\DMonolit\source\repos\SymmetricCryptography\obj\Release\SymmetricCryptography.csprojAssemblyReference.cache
+C:\Users\DMonolit\source\repos\SymmetricCryptography\obj\Release\SymmetricCryptography.MainForm.resources
+C:\Users\DMonolit\source\repos\SymmetricCryptography\obj\Release\SymmetricCryptography.Properties.Resources.resources
+C:\Users\DMonolit\source\repos\SymmetricCryptography\obj\Release\SymmetricCryptography.csproj.GenerateResource.cache
+C:\Users\DMonolit\source\repos\SymmetricCryptography\obj\Release\SymmetricCryptography.csproj.CoreCompileInputs.cache
+C:\Users\DMonolit\source\repos\SymmetricCryptography\obj\Release\SymmetricCryptography.exe
+C:\Users\DMonolit\source\repos\SymmetricCryptography\obj\Release\SymmetricCryptography.pdb
