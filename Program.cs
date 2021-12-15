@@ -1,4 +1,6 @@
-﻿namespace SymmetricCryptography
+﻿using System.Windows.Forms;
+
+namespace SymmetryEncoder
 {
     static class Program
     {
@@ -8,9 +10,9 @@
         [System.STAThread]
         public static void Main()
         {
-            System.Windows.Forms.Application.EnableVisualStyles();
-            System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
-            System.Windows.Forms.Application.Run(new MainForm());
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new MainForm());
         }
     }
 }

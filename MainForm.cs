@@ -1,388 +1,219 @@
-﻿namespace SymmetricCryptography
+﻿using System;
+using System.IO;
+using System.Windows.Forms;
+using SymmetryEncoder.Encoders;
+using SymmetryEncoder.IOManager;
+
+namespace SymmetryEncoder
 {
-    sealed partial class MainForm : System.Windows.Forms.Form
+    sealed partial class MainForm : Form
     {
-        //Глобальное поле - ссылка на объект класса SymmetryAbstract:
-        private static SymmetryAbstract MySymmetry;
-        public MainForm() => InitializeComponent();
-        
-        //Команды, выполняющиеся при загрузке формы:
-        private void MainForm_Load(object sender, System.EventArgs e)
+        private ISymmetry Symmetry { get; set; }
+        private EncodersIOServices IOServices { get; }
+
+        public MainForm()
         {
-            //Что бы нельзя было растягивать форму:
-            FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            //Установка параметров для GroupBox:
+            InitializeComponent();
+            IOServices = new EncodersIOServices();
+
             AES.Checked = true;
             Encrypt.Checked = true;
 
-            //Какая директория будет отображаться в OpenFileDialog по умолчанию:
-            OpenFileDialog.InitialDirectory = System.Environment.GetFolderPath(System.Environment.SpecialFolder.DesktopDirectory);
+            OpenFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+            SaveFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+            SaveFileDialog.Filter = "Text File|*.txt";
 
-            //Определение формата файлов, который можно будет сохранить в SaveFileDialog:
-            SaveFileDialog.Filter = "Текстовый файл (*.txt)|*.txt";
-            //Какая директория будет отображаться в SaveFileDialog по умолчанию:
-            SaveFileDialog.InitialDirectory = System.Environment.GetFolderPath(System.Environment.SpecialFolder.DesktopDirectory);
+            Encrypt.CheckedChanged += EncryptOrDecryptRadioButton_CheckedChanged;
+            Decrypt.CheckedChanged += EncryptOrDecryptRadioButton_CheckedChanged;
+
+            InputPathTextLabel.Text = $"Enter the file path containing the text to {(Encrypt.Checked ? "encrypt" : "decrypt")}:";
+            EncryptDecryptTextLabel.Text = $"{(Encrypt.Checked ? "Encrypted" : "Decrypted")} text:";
+            EncryptOrDecryptTextFromFileButton.Text = Encrypt.Checked ? "Encrypt" : "Decrypt";
         }
 
-        //Метод, обрабатывающий событие, когда пользователь нажимает на кнопку Шифрования/Дешифрования:
-        private void EncryptedOrDecryptedButton_Click(object sender, System.EventArgs e)
+        private void Encrypt_CheckedChanged(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void EncryptOrDecryptTextFromFileButton_Click(object sender, EventArgs e)
         {
             try
             {
-                //Если файла из пути в TextBox не существует:
-                if (!System.IO.File.Exists(PathInputTextBox.Text)) throw new System.IO.FileNotFoundException("Файла на указанном Вами пути не существует!");
-                //Переменная для записи пути, по которому будет записываться зашифровыванный массив байтов:
-                string PathToByteArray = null;
+                if (!File.Exists(PathInputTextBox.Text)) 
+                    throw new FileNotFoundException("The file on the path you specified does not exist!");
 
-                //Определение алгоритма шифрования:
-                //Если выбран AES:
-                if (AES.Checked == true)
-                {
-                    //Если объекта не существует, создаем его:
-                    if (MySymmetry as AESClass == null) MySymmetry = new AESClass(PathInputTextBox.Text);
-                    //Если объект существует, обновляем поле с текстом для шифрования:
-                    else MySymmetry.WritePathToFileWithDecryptedText = PathInputTextBox.Text;
-                    PathToByteArray = "\\EncryptedViaAES.txt";
-                }
-                else //Если выбран Rijndael
-                {
-                    //Если объекта не существует, создаем его:
-                    if (MySymmetry as RijndaelClass == null) MySymmetry = new RijndaelClass(PathInputTextBox.Text);
-                    //Если объект существует, но его поле с текстом для шифрования пусто или путь требует обновления:
-                    else MySymmetry.WritePathToFileWithDecryptedText = PathInputTextBox.Text;
-                    PathToByteArray = "\\EncryptedViaRijndael.txt";
-                }
-                //Если RadioButton == Encrypt - идет шифрование текста:
-                if (Encrypt.Checked == true)
-                {
-                    //Шифрование текста
-                    MySymmetry.EncryptStringIntoBytes();
-                    using (var Reader = System.IO.File.OpenText(System.IO.Directory.GetCurrentDirectory() + PathToByteArray)) EncryptedTextBox.Text = Reader.ReadToEnd();
-                }
-                //Если RadioButton == Decrypt - идет расшифровка текста:
-                else EncryptedTextBox.Text = MySymmetry.DecryptStringFromBytes(System.IO.File.ReadAllBytes(PathInputTextBox.Text));
-            }
-            catch (System.UnauthorizedAccessException Ex)
-            {
-                System.Windows.Forms.MessageBox.Show("Ошибка безопасности. Возможно, у Вас недостаточно прав для записи на данном диске",
-                    Ex.GetType().Name,
-                    System.Windows.Forms.MessageBoxButtons.OK,
-                    System.Windows.Forms.MessageBoxIcon.Error);
-                //Запись лога вылета в файл:
-                System.IO.File.WriteAllText(System.IO.Directory.GetCurrentDirectory() + "\\log.txt",
-                    $"Тип ошибки: {Ex.GetType()}\n\rОписание ошибки: {Ex.Message}\n\rМетод: {Ex.TargetSite}\n\rМесто ошибки: {Ex.StackTrace}");
-            }
-            catch (System.Security.Cryptography.CryptographicException Ex)
-            {
-                System.Windows.Forms.MessageBox.Show("Ошибка шифрования. Возможно, Ваши Key и IV не поддерживаются",
-                Ex.GetType().Name,
-                System.Windows.Forms.MessageBoxButtons.OK,
-                System.Windows.Forms.MessageBoxIcon.Error);
-                //Запись лога вылета в файл:
-                System.IO.File.WriteAllText(System.IO.Directory.GetCurrentDirectory() + "\\log.txt",
-                    $"Тип ошибки: {Ex.GetType()}\n\rОписание ошибки: {Ex.Message}\n\rМетод: {Ex.TargetSite}\n\rМесто ошибки: {Ex.StackTrace}");
-            }
-            catch (System.Exception Ex)
-            {
-                System.Windows.Forms.MessageBox.Show(Ex.Message, Ex.GetType().Name,
-                    System.Windows.Forms.MessageBoxButtons.OK,
-                    System.Windows.Forms.MessageBoxIcon.Error);
-                //Запись лога вылета в файл:
-                System.IO.File.WriteAllText(System.IO.Directory.GetCurrentDirectory() + "\\log.txt",
-                    $"Тип ошибки: {Ex.GetType()}\n\rОписание ошибки: {Ex.Message}\n\rМетод: {Ex.TargetSite}\n\rМесто ошибки: {Ex.StackTrace}");
-            }
-        }
+                if (AES.Checked && Symmetry as AESEncoder == null)
+                    Symmetry = new AESEncoder();
+                else if(Rijndael.Checked && Symmetry as RijndaelEncoder == null)
+                    Symmetry = new RijndaelEncoder();
 
-        //Метод, обрабатывающий событие, когда пользователь нажимает на кнопку при Шифровании/дешифровании с ВЫБОРОМ ПУТИ:
-        private void EncryptAtChoicePathButton_Click(object sender, System.EventArgs e)
-        {
-            try
-            {
-                //Если файла из пути в TextBox не существует:
-                if (!System.IO.File.Exists(PathInputTextBox.Text)) throw new System.IO.FileNotFoundException("Файла на указанном Вами пути не существует!");
-                //Определение алгоритма шифрования:
-                //Если выбран AES:
-                if (AES.Checked == true)
+                string fileName = null;
+                if (Symmetry is AESEncoder)
+                    fileName = "AESEncryptionData.txt";
+                else if (Symmetry is RijndaelEncoder)
+                    fileName = "RijndaelEncryptionData.txt";
+
+                string filePath = null;
+                if (Encrypt.Checked) //encrypt text
                 {
-                    //Если объекта не существует, создаем его:
-                    if (MySymmetry as AESClass == null) MySymmetry = new AESClass(PathInputTextBox.Text);
-                    //Если объект существует, обновляем поле с текстом для шифрования:
-                    else MySymmetry.WritePathToFileWithDecryptedText = PathInputTextBox.Text;
-                }
-                else //Если выбран Rijndael
-                {
-                    //Если объекта не существует, создаем его:
-                    if (MySymmetry as RijndaelClass == null) MySymmetry = new RijndaelClass(PathInputTextBox.Text);
-                    //Если объект существует, но его поле с текстом для шифрования пусто или путь требует обновления:
-                    else MySymmetry.WritePathToFileWithDecryptedText = PathInputTextBox.Text;
-                }
-                if (Encrypt.Checked == true) //Если RadioButton == Encrypt - идет шифрование текста:
-                {
-                    //Заголовок и открытие файлового окна OFD:
-                    SaveFileDialog.Title = "Выбор файла для сохранения шифрованного текста";
-                    if (SaveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    SaveFileDialog.Title = "Select a file to save encrypted text";
+                    if (SaveFileDialog.ShowDialog() == DialogResult.OK)
                     {
-                        //Шифрование текста:
-                        MySymmetry.EncryptStringIntoBytes(SaveFileDialog.FileName);
-                        using (var Reader = System.IO.File.OpenText(SaveFileDialog.FileName)) EncryptedTextBox.Text = Reader.ReadToEnd();
+                        //Encryption:
+                        var encryptedBytes = Symmetry.EncryptStringIntoBytes(File.ReadAllText(PathInputTextBox.Text));
+
+                        File.WriteAllBytes(SaveFileDialog.FileName, encryptedBytes);
+                        string dataFilePath = string.Concat(SaveFileDialog.FileName, '.', fileName);
+                        IOServices.WriteKeyAndIVInFile(Symmetry, dataFilePath);
+                        MessageBox.Show($"Encrypted text was saved to file at {SaveFileDialog.FileName};" +
+                            $"\ndata for decrypt was saved to file at {dataFilePath}",
+                            "Encryption Complete",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
+
+                        EncryptedTextBox.Text = System.Text.Encoding.Default.GetString(encryptedBytes);
                     }
-                    //Освобождение ресурсов:
                     SaveFileDialog.Dispose();
                 }
-                else //Если RadioButton == Decrypt - идет расшифровка текста:
+                else //decrypt text
                 {
-                    //Заголовок и открытие файлового окна SFD:
-                    SaveFileDialog.Title = "Выбор файла для сохранения дешифрованного текста";
-                    if (SaveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK) //Дешифрование текста:
-                        EncryptedTextBox.Text = MySymmetry.DecryptStringFromBytes(System.IO.File.ReadAllBytes(PathInputTextBox.Text), SaveFileDialog.FileName);
-                    //Освобождение ресурсов:
+                    SaveFileDialog.Title = "Select a file to save decrypted text";
+                    if (SaveFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        EncryptedTextBox.Text = Symmetry.DecryptStringFromBytes(File.ReadAllBytes(PathInputTextBox.Text));
+                        File.WriteAllText(SaveFileDialog.FileName, EncryptedTextBox.Text);
+                        MessageBox.Show($"Decrypted text was saved to file at {filePath}",
+                            "Decryption completed",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
+                    }
                     SaveFileDialog.Dispose();
                 }
             }
-            catch (System.UnauthorizedAccessException Ex)
+            catch (Exception Ex)
             {
-                System.Windows.Forms.MessageBox.Show("Ошибка безопасности. Возможно, у Вас недостаточно прав для записи на данном диске",
+                MessageBox.Show(Ex.Message,
                     Ex.GetType().Name,
-                    System.Windows.Forms.MessageBoxButtons.OK,
-                    System.Windows.Forms.MessageBoxIcon.Error);
-                //Запись лога вылета в файл:
-                System.IO.File.WriteAllText(System.IO.Directory.GetCurrentDirectory() + "\\log.txt",
-                    $"Тип ошибки: {Ex.GetType()}\n\rОписание ошибки: {Ex.Message}\n\rМетод: {Ex.TargetSite}\n\rМесто ошибки: {Ex.StackTrace}");
-            }
-            catch (System.Security.Cryptography.CryptographicException Ex)
-            {
-                System.Windows.Forms.MessageBox.Show("Ошибка шифрования. Возможно, Ваши Key и IV не поддерживаются",
-                Ex.GetType().Name,
-                System.Windows.Forms.MessageBoxButtons.OK,
-                System.Windows.Forms.MessageBoxIcon.Error);
-                //Запись лога вылета в файл:
-                System.IO.File.WriteAllText(System.IO.Directory.GetCurrentDirectory() + "\\log.txt",
-                    $"Тип ошибки: {Ex.GetType()}\n\rОписание ошибки: {Ex.Message}\n\rМетод: {Ex.TargetSite}\n\rМесто ошибки: {Ex.StackTrace}");
-            }
-            catch (System.Exception Ex)
-            {
-                System.Windows.Forms.MessageBox.Show(Ex.Message, Ex.GetType().Name,
-                    System.Windows.Forms.MessageBoxButtons.OK,
-                    System.Windows.Forms.MessageBoxIcon.Error);
-                //Запись лога вылета в файл:
-                System.IO.File.WriteAllText(System.IO.Directory.GetCurrentDirectory() + "\\log.txt",
-                    $"Тип ошибки: {Ex.GetType()}\n\rОписание ошибки: {Ex.Message}\n\rМетод: {Ex.TargetSite}\n\rМесто ошибки: {Ex.StackTrace}");
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+
+                File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "log.txt"),
+                    Ex.ToString());
             }
         }
 
-        //Метод, обрабатывающий событие, когда пользователь нажимает на кнопку ВВОДА ПУТИ с файлом для шифрования/дешифрования:
-        private void ChoiceOfPathButton_Click(object sender, System.EventArgs e)
+        private void ChoiceOfPathToFileForEncryptButton_Click(object sender, EventArgs e)
         {
-            //Определение формата файлов, который можно будет выбрать в OpenFileDialog:
-            OpenFileDialog.Filter = "Все файлы (*.*)|*.*|Текстовый файл (*.txt)|*.txt|Документ HTML (*.html)|*.html|Электронная книга (*.fb2; *.epub)|*.fb2; *.epub";
-            //Заголовок файлового окна OFD:
-            OpenFileDialog.Title = "Выбор текстового файла";
-            if (OpenFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK) PathInputTextBox.Text = OpenFileDialog.FileName;
-            //Освобождение ресурсов:
+            OpenFileDialog.Title = "Select Text File";
+            if(Encrypt.Checked)
+                OpenFileDialog.Filter = "Text File|*.txt|HTML Document|*.html|eBook|*.fb2;*.epub";
+            else
+                OpenFileDialog.Filter = "Text File|*.txt";
+
+            if (OpenFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                PathInputTextBox.Text = OpenFileDialog.FileName;
+            }
+
             OpenFileDialog.Dispose();
         }
 
-        //Метод, обрабатывающий событие, когда пользователь нажимает на кнопку "Сохранить Key & IV":
-        private void SaveKeyAndIVData_Click(object sender, System.EventArgs e)
+        private void SaveKeyAndIVDataOnUserFolderButton_Click(object sender, EventArgs e)
         {
             try
             {
-                //Если объекта не существует:
-                if (MySymmetry == null) throw new System.NullReferenceException("Текущие Key и IV не установлены в программе!");
-                //Если ссылка на объект производного от SymmetryAbstract класса не соответствует выбранному алгоритму шифрования:
-                if ((MySymmetry is AESClass && Rijndael.Checked == true) || (MySymmetry is RijndaelClass && AES.Checked == true))
-                    throw new System.FormatException("Нельзя сохранить Key и IV, так как они принадлежат к другому алгоритму шифрования!");
-
-                //Очищение TextBox'ов:
-                PathInputTextBox.Clear();
-                EncryptedTextBox.Clear();
-
-                //Сохраняем ключ:
-                MySymmetry.WriteKeyAndIVInFile();
-            }
-            catch (System.UnauthorizedAccessException Ex)
-            {
-                System.Windows.Forms.MessageBox.Show("Ошибка безопасности. Возможно, у Вас недостаточно прав для записи на данном диске",
-                    Ex.GetType().Name,
-                    System.Windows.Forms.MessageBoxButtons.OK,
-                    System.Windows.Forms.MessageBoxIcon.Error);
-                //Запись лога вылета в файл:
-                System.IO.File.WriteAllText(System.IO.Directory.GetCurrentDirectory() + "\\log.txt",
-                    $"Тип ошибки: {Ex.GetType()}\n\rОписание ошибки: {Ex.Message}\n\rМетод: {Ex.TargetSite}\n\rМесто ошибки: {Ex.StackTrace}");
-            }
-            catch (System.Exception Ex)
-            {
-                System.Windows.Forms.MessageBox.Show(Ex.Message, Ex.GetType().Name,
-                    System.Windows.Forms.MessageBoxButtons.OK,
-                    System.Windows.Forms.MessageBoxIcon.Error);
-                //Запись лога вылета в файл:
-                System.IO.File.WriteAllText(System.IO.Directory.GetCurrentDirectory() + "\\log.txt",
-                    $"Тип ошибки: {Ex.GetType()}\n\rОписание ошибки: {Ex.Message}\n\rМетод: {Ex.TargetSite}\n\rМесто ошибки: {Ex.StackTrace}");
-            }
-        }
-
-        //Метод, обрабатывающий событие, когда пользователь нажимает на кнопку для сохранения Key и IV в файл пользователя:
-        private void SaveKeyAndIVInUserFolder_Click(object sender, System.EventArgs e)
-        {
-            try
-            {
-                //Если объекта не существует:
-                if (MySymmetry == null) throw new System.NullReferenceException("Текущие Key и IV не установлены в программе!");
-                //Если ссылка на объект производного от SymmetryAbstract класса не соответствует выбранному алгоритму шифрования:
-                if ((MySymmetry is AESClass && Rijndael.Checked == true) || (MySymmetry is RijndaelClass && AES.Checked == true))
-                    throw new System.FormatException("Нельзя сохранить Key и IV, так как они принадлежат к другому алгоритму шифрования!");
-                //Заголовок файлового окна SFD:
-                SaveFileDialog.Title = "Сохранение Key и IV";
-                //Запись в выбранный файл:
-                if (SaveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK) MySymmetry.WriteKeyAndIVInFile(SaveFileDialog.FileName);
-                //Освобождение ресурсов:
+                if (Symmetry == null)
+                    throw new NullReferenceException("Current Key and IV are not installed in the program!");
+                if ((AES.Checked && Symmetry is RijndaelEncoder) || (Rijndael.Checked && Symmetry is AESEncoder))
+                    throw new FormatException("Key and IV cannot be saved because they belong to another encryption algorithm!");
+                
+                SaveFileDialog.Title = "Save Key and IV";
+                if (SaveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string filePath = IOServices.WriteKeyAndIVInFile(Symmetry, SaveFileDialog.FileName);
+                    MessageBox.Show($"Your Key and IV were saved successfully at {filePath}",
+                        "Data Saved",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                }
                 SaveFileDialog.Dispose();
             }
-            catch (System.UnauthorizedAccessException Ex)
+            catch (Exception Ex)
             {
-                System.Windows.Forms.MessageBox.Show("Ошибка безопасности. Возможно, у Вас недостаточно прав для записи на данном диске",
+                MessageBox.Show(Ex.Message,
                     Ex.GetType().Name,
-                    System.Windows.Forms.MessageBoxButtons.OK,
-                    System.Windows.Forms.MessageBoxIcon.Error);
-                //Запись лога вылета в файл:
-                System.IO.File.WriteAllText(System.IO.Directory.GetCurrentDirectory() + "\\log.txt",
-                    $"Тип ошибки: {Ex.GetType()}\n\rОписание ошибки: {Ex.Message}\n\rМетод: {Ex.TargetSite}\n\rМесто ошибки: {Ex.StackTrace}");
-            }
-            catch (System.Exception Ex)
-            {
-                System.Windows.Forms.MessageBox.Show(Ex.Message, Ex.GetType().Name,
-                    System.Windows.Forms.MessageBoxButtons.OK,
-                    System.Windows.Forms.MessageBoxIcon.Error);
-                //Запись лога вылета в файл:
-                System.IO.File.WriteAllText(System.IO.Directory.GetCurrentDirectory() + "\\log.txt",
-                    $"Тип ошибки: {Ex.GetType()}\n\rОписание ошибки: {Ex.Message}\n\rМетод: {Ex.TargetSite}\n\rМесто ошибки: {Ex.StackTrace}");
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+
+                File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "log.txt"),
+                    Ex.ToString());
             }
         }
 
-        //Метод, обрабатывающий событие, когда пользователь нажимает на кнопку "Загрузить Key & IV":
-        private void LoadKeyAndIVData_Click(object sender, System.EventArgs e)
+        private void DownloadKeyAndIVDataFromUserFolderButton_Click(object sender, EventArgs e)
         {
-            //Очищение TextBox:
-            EncryptedTextBox.Clear();
-
             try
             {
-                //Создание нового объекта и загрузка:
-                if (AES.Checked == true) MySymmetry = new AESClass(); //Если выбран AES
-                else MySymmetry = new RijndaelClass(); //Если выбран Rijndael
-                //Сохранение в объекте Key и IV:
-                MySymmetry.ReadKeyAndIVFromFile();
-            }
-            catch (System.UnauthorizedAccessException Ex)
-            {
-                System.Windows.Forms.MessageBox.Show("Ошибка безопасности. Возможно, у Вас недостаточно прав для чтения на данном диске",
-                    Ex.GetType().Name,
-                    System.Windows.Forms.MessageBoxButtons.OK,
-                    System.Windows.Forms.MessageBoxIcon.Error);
-                //Запись лога вылета в файл:
-                System.IO.File.WriteAllText(System.IO.Directory.GetCurrentDirectory() + "\\log.txt",
-                    $"Тип ошибки: {Ex.GetType()}\n\rОписание ошибки: {Ex.Message}\n\rМетод: {Ex.TargetSite}\n\rМесто ошибки: {Ex.StackTrace}");
-            }
-            catch (System.Exception Ex)
-            {
-                System.Windows.Forms.MessageBox.Show("Выбранный Вами файл не содержат Key и IV, которые могут быть использованы для криптографических преобразований",
-                    Ex.GetType().Name,
-                    System.Windows.Forms.MessageBoxButtons.OK,
-                    System.Windows.Forms.MessageBoxIcon.Error);
-                //Запись лога вылета в файл:
-                System.IO.File.WriteAllText(System.IO.Directory.GetCurrentDirectory() + "\\log.txt",
-                    $"Тип ошибки: {Ex.GetType()}\n\rОписание ошибки: {Ex.Message}\n\rМетод: {Ex.TargetSite}\n\rМесто ошибки: {Ex.StackTrace}");
-            }
-        }
+                OpenFileDialog.Filter = "Text file|*.txt";
+                OpenFileDialog.Title = "Select a file with Key and IV";
 
-        //Метод, обрабатывающий событие, когда пользователь нажимает на кнопку загрузки Key и IV из файла, выбранного пользователем:
-        private void LoadKeyAndIVViaOFDButton_Click(object sender, System.EventArgs e)
-        {
-            //Создание нового объекта и загрузка:
-            if (AES.Checked == true) MySymmetry = new AESClass(); //Если выбран AES
-            else MySymmetry = new RijndaelClass(); //Если выбран Rijndael
-            try
-            {
-                //Определение формата файлов, который можно будет выбрать в OpenFileDialog:
-                OpenFileDialog.Filter = "Текстовый файл (*.txt)|*.txt";
-                //Меняем заголовок OFD:
-                OpenFileDialog.Title = "Выбор файла с Key и IV";
-                if (OpenFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK) MySymmetry.ReadKeyAndIVFromFile(OpenFileDialog.FileName);
-                //Освобождение ресурсов:
+                if (OpenFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    if (AES.Checked)
+                        Symmetry = new AESEncoder();
+                    else
+                        Symmetry = new RijndaelEncoder();
+
+                    IOServices.ReadKeyAndIVFromFile(Symmetry, OpenFileDialog.FileName);
+                    MessageBox.Show("Your Key and IV were successfully downloaded",
+                        "Data Loaded",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                }
                 OpenFileDialog.Dispose();
             }
-            catch (System.UnauthorizedAccessException Ex)
+            catch (Exception Ex)
             {
-                System.Windows.Forms.MessageBox.Show("Ошибка безопасности. Возможно, у Вас недостаточно прав для чтения на данном диске",
+                MessageBox.Show(Ex.Message,
                     Ex.GetType().Name,
-                    System.Windows.Forms.MessageBoxButtons.OK,
-                    System.Windows.Forms.MessageBoxIcon.Error);
-                //Запись лога вылета в файл:
-                System.IO.File.WriteAllText(System.IO.Directory.GetCurrentDirectory() + "\\log.txt",
-                    $"Тип ошибки: {Ex.GetType()}\n\rОписание ошибки: {Ex.Message}\n\rМетод: {Ex.TargetSite}\n\rМесто ошибки: {Ex.StackTrace}");
-            }
-            catch (System.Exception Ex)
-            {
-                System.Windows.Forms.MessageBox.Show("Выбранный Вами файл не содержат Key и IV, которые могут быть использованы для криптографических преобразований",
-                    Ex.GetType().Name,
-                    System.Windows.Forms.MessageBoxButtons.OK,
-                    System.Windows.Forms.MessageBoxIcon.Error);
-                //Запись лога вылета в файл:
-                System.IO.File.WriteAllText(System.IO.Directory.GetCurrentDirectory() + "\\log.txt",
-                    $"Тип ошибки: {Ex.GetType()}\n\rОписание ошибки: {Ex.Message}\n\rМетод: {Ex.TargetSite}\n\rМесто ошибки: {Ex.StackTrace}");
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+
+                File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "log.txt"),
+                    Ex.ToString());
             }
         }
 
-        //Метод, обрабатывающий событие, когда пользователь нажимает на кнопку "Создать новые Key и IV":
-        private void UpdateData_Click(object sender, System.EventArgs e)
+        private void CreateNewEncryptDataOnUserFolderButton_Click(object sender, EventArgs e)
         {
-            //Очищение TextBox:
-            EncryptedTextBox.Clear();
-
-            //Создание нового объекта и загрузка в него ключа ключа:
-            if (AES.Checked == true) MySymmetry = new AESClass(); //Если выбран AES
-            else MySymmetry = new RijndaelClass(); //Если выбран Rijndael
-            //Сохранение новых Key и IV в текстовый файл:
-            MySymmetry.WriteKeyAndIVInFile();
-        }
-
-
-        //Метод, обрабатывающий событие, когда пользователь нажимает на кнопку "Создать новые Key и IV" и записать их в файл пользователя:
-        private void UpdateDataOnUserPathButton_Click(object sender, System.EventArgs e)
-        {
-            //Заголовок файлового окна OFD:
-            SaveFileDialog.Title = "Сохранение новых Key и IV";
-            if (SaveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            SaveFileDialog.Title = "Save New Key and IV";
+            if (SaveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                //Очищение TextBox:
                 EncryptedTextBox.Clear();
 
-                //Создание нового объекта и загрузка в него ключа ключа:
-                if (AES.Checked == true) MySymmetry = new AESClass(); //Если выбран AES
-                else MySymmetry = new RijndaelClass(); //Если выбран Rijndael
-                //Сохранение новых Key и IV в текстовый файл:
-                MySymmetry.WriteKeyAndIVInFile(SaveFileDialog.FileName);
+                if (AES.Checked == true)
+                    Symmetry = new AESEncoder();
+                else 
+                    Symmetry = new RijndaelEncoder();
+
+                string filePath = IOServices.WriteKeyAndIVInFile(Symmetry, SaveFileDialog.FileName);
+                MessageBox.Show($"Your Key and IV were saved successfully at {filePath}",
+                    "Data Saved",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
             }
-            //Освобождение ресурсов:
+
             SaveFileDialog.Dispose();
         }
 
-        //Просто что бы очищался TextBox с шифрованным/дешифрованным текстом
-        private void EncryptOrDecryptGroupBox_Enter(object sender, System.EventArgs e) => EncryptedTextBox.Clear();
-        private void AlgorithmChoiceGroupBox_Enter(object sender, System.EventArgs e) => EncryptedTextBox.Clear();
+        private void EncryptOrDecryptRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            EncryptedTextBox.Clear();
+            InputPathTextLabel.Text = $"Enter the file path containing the text to {(Encrypt.Checked ? "encrypt" : "decrypt")}:";
+            EncryptDecryptTextLabel.Text = $"{(Encrypt.Checked ? "Encrypted" : "Decrypted")} text:";
+            EncryptOrDecryptTextFromFileButton.Text = Encrypt.Checked ? "Encrypt" : "Decrypt";
+        }
+        private void AlgorithmChoiceGroupBox_Click(object sender, EventArgs e) => EncryptedTextBox.Clear();
     }
 }
-
-
-
-
-/*
- * Developed by Danil Rudin in 2021 year
- * College of Business Technology
- * Group of IB31-18
- * I express my gratitude for the knowledge received to 
- * Friedman V.A., 
- * Makarov A.L., 
- * Korotkin M.V., 
- * Ershova A.L.
- */
