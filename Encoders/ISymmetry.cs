@@ -1,5 +1,8 @@
 ﻿namespace SymmetryEncoder.Encoders
 {
+    /// <summary>
+    /// Specifies the list of abstract members of the class that implements encryption
+    /// </summary>
     interface ISymmetry
     {
         /// <summary>
@@ -21,9 +24,9 @@
         /// <summary>
         /// Decrypts text encrypted by a symmetric encryption algorithm
         /// </summary>
-        /// <param name="cipherBytes"></param>
+        /// <param name="encryptedData"></param>
         /// <param name="filePath"></param>
         /// <returns>Decrypted string</returns>
-        string DecryptStringFromBytes(byte[] cipherBytes);
+        string DecryptStringFromBytes(byte[] encryptedData);
     }
 }

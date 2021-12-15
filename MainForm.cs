@@ -31,9 +31,19 @@ namespace SymmetryEncoder
             EncryptOrDecryptTextFromFileButton.Text = Encrypt.Checked ? "Encrypt" : "Decrypt";
         }
 
-        private void Encrypt_CheckedChanged(object sender, EventArgs e)
+        private void GetPathToFileForEncryptButton_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            OpenFileDialog.Title = "Select Text File";
+            if (Encrypt.Checked)
+                OpenFileDialog.Filter = "Text File|*.txt|HTML Document|*.html|eBook|*.fb2;*.epub";
+            else
+                OpenFileDialog.Filter = "Text File|*.txt";
+
+            if (OpenFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                PathInputTextBox.Text = OpenFileDialog.FileName;
+            }
+            OpenFileDialog.Dispose();
         }
 
         private void EncryptOrDecryptTextFromFileButton_Click(object sender, EventArgs e)
@@ -81,7 +91,9 @@ namespace SymmetryEncoder
                     SaveFileDialog.Title = "Select a file to save decrypted text";
                     if (SaveFileDialog.ShowDialog() == DialogResult.OK)
                     {
+                        //Decryption:
                         EncryptedTextBox.Text = Symmetry.DecryptStringFromBytes(File.ReadAllBytes(PathInputTextBox.Text));
+
                         File.WriteAllText(SaveFileDialog.FileName, EncryptedTextBox.Text);
                         MessageBox.Show($"Decrypted text was saved to file at {filePath}",
                             "Decryption completed",
@@ -103,23 +115,7 @@ namespace SymmetryEncoder
             }
         }
 
-        private void ChoiceOfPathToFileForEncryptButton_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog.Title = "Select Text File";
-            if(Encrypt.Checked)
-                OpenFileDialog.Filter = "Text File|*.txt|HTML Document|*.html|eBook|*.fb2;*.epub";
-            else
-                OpenFileDialog.Filter = "Text File|*.txt";
-
-            if (OpenFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                PathInputTextBox.Text = OpenFileDialog.FileName;
-            }
-
-            OpenFileDialog.Dispose();
-        }
-
-        private void SaveKeyAndIVDataOnUserFolderButton_Click(object sender, EventArgs e)
+        private void SaveKeyAndIVDataOnUserPathButton_Click(object sender, EventArgs e)
         {
             try
             {
@@ -151,7 +147,7 @@ namespace SymmetryEncoder
             }
         }
 
-        private void DownloadKeyAndIVDataFromUserFolderButton_Click(object sender, EventArgs e)
+        private void DownloadKeyAndIVDataFromUserPathButton_Click(object sender, EventArgs e)
         {
             try
             {
@@ -185,7 +181,7 @@ namespace SymmetryEncoder
             }
         }
 
-        private void CreateNewEncryptDataOnUserFolderButton_Click(object sender, EventArgs e)
+        private void CreateNewEncryptDataOnUserPathButton_Click(object sender, EventArgs e)
         {
             SaveFileDialog.Title = "Save New Key and IV";
             if (SaveFileDialog.ShowDialog() == DialogResult.OK)

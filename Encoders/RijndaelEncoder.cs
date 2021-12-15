@@ -75,3 +75,5 @@ namespace SymmetryEncoder.Encoders
         }
     }
 }
+
+//https://docs.microsoft.com/ru-ru/dotnet/api/system.security.cryptography.rijndael?view=netframework-4.8

@@ -39,13 +39,13 @@
             this.AlgorithmChoiceGroupBox = new System.Windows.Forms.GroupBox();
             this.AES = new System.Windows.Forms.RadioButton();
             this.Rijndael = new System.Windows.Forms.RadioButton();
-            this.ChoiceOfPathToFileForEncryptButton = new System.Windows.Forms.Button();
+            this.GetPathToFileForEncryptButton = new System.Windows.Forms.Button();
             this.OpenFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.DownloadKeyAndIVDataFromUserFolderButton = new System.Windows.Forms.Button();
-            this.SaveKeyAndIVDataOnUserFolderButton = new System.Windows.Forms.Button();
+            this.DownloadKeyAndIVDataFromUserPathButton = new System.Windows.Forms.Button();
+            this.SaveKeyAndIVDataOnUserPathButton = new System.Windows.Forms.Button();
             this.SaveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.EncryptOrDecryptTextFromFileButton = new System.Windows.Forms.Button();
-            this.CreateNewEncryptDataOnUserFolderButton = new System.Windows.Forms.Button();
+            this.CreateNewEncryptDataOnUserPathButton = new System.Windows.Forms.Button();
             this.EncryptOrDecryptGroupBox.SuspendLayout();
             this.AlgorithmChoiceGroupBox.SuspendLayout();
             this.SuspendLayout();
@@ -87,6 +87,7 @@
             this.PathInputTextBox.Location = new System.Drawing.Point(12, 39);
             this.PathInputTextBox.Multiline = true;
             this.PathInputTextBox.Name = "PathInputTextBox";
+            this.PathInputTextBox.ReadOnly = true;
             this.PathInputTextBox.Size = new System.Drawing.Size(601, 25);
             this.PathInputTextBox.TabIndex = 23;
             // 
@@ -165,53 +166,53 @@
             this.Rijndael.Text = "Rijndael";
             this.Rijndael.UseVisualStyleBackColor = true;
             // 
-            // ChoiceOfPathToFileForEncryptButton
+            // GetPathToFileForEncryptButton
             // 
-            this.ChoiceOfPathToFileForEncryptButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.ChoiceOfPathToFileForEncryptButton.FlatAppearance.BorderSize = 2;
-            this.ChoiceOfPathToFileForEncryptButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.ChoiceOfPathToFileForEncryptButton.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.ChoiceOfPathToFileForEncryptButton.Location = new System.Drawing.Point(619, 39);
-            this.ChoiceOfPathToFileForEncryptButton.Name = "ChoiceOfPathToFileForEncryptButton";
-            this.ChoiceOfPathToFileForEncryptButton.Size = new System.Drawing.Size(41, 25);
-            this.ChoiceOfPathToFileForEncryptButton.TabIndex = 23;
-            this.ChoiceOfPathToFileForEncryptButton.Text = "...";
-            this.ChoiceOfPathToFileForEncryptButton.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.ChoiceOfPathToFileForEncryptButton.UseVisualStyleBackColor = true;
-            this.ChoiceOfPathToFileForEncryptButton.Click += new System.EventHandler(this.ChoiceOfPathToFileForEncryptButton_Click);
+            this.GetPathToFileForEncryptButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.GetPathToFileForEncryptButton.FlatAppearance.BorderSize = 2;
+            this.GetPathToFileForEncryptButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.GetPathToFileForEncryptButton.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.GetPathToFileForEncryptButton.Location = new System.Drawing.Point(619, 39);
+            this.GetPathToFileForEncryptButton.Name = "GetPathToFileForEncryptButton";
+            this.GetPathToFileForEncryptButton.Size = new System.Drawing.Size(41, 25);
+            this.GetPathToFileForEncryptButton.TabIndex = 23;
+            this.GetPathToFileForEncryptButton.Text = "...";
+            this.GetPathToFileForEncryptButton.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.GetPathToFileForEncryptButton.UseVisualStyleBackColor = true;
+            this.GetPathToFileForEncryptButton.Click += new System.EventHandler(this.GetPathToFileForEncryptButton_Click);
             // 
             // OpenFileDialog
             // 
             this.OpenFileDialog.ReadOnlyChecked = true;
             // 
-            // DownloadKeyAndIVDataFromUserFolderButton
+            // DownloadKeyAndIVDataFromUserPathButton
             // 
-            this.DownloadKeyAndIVDataFromUserFolderButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.DownloadKeyAndIVDataFromUserFolderButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.DownloadKeyAndIVDataFromUserFolderButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.DownloadKeyAndIVDataFromUserFolderButton.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.DownloadKeyAndIVDataFromUserFolderButton.Location = new System.Drawing.Point(12, 276);
-            this.DownloadKeyAndIVDataFromUserFolderButton.Name = "DownloadKeyAndIVDataFromUserFolderButton";
-            this.DownloadKeyAndIVDataFromUserFolderButton.Size = new System.Drawing.Size(772, 28);
-            this.DownloadKeyAndIVDataFromUserFolderButton.TabIndex = 17;
-            this.DownloadKeyAndIVDataFromUserFolderButton.Text = "Download existing Key and IV";
-            this.DownloadKeyAndIVDataFromUserFolderButton.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.DownloadKeyAndIVDataFromUserFolderButton.UseVisualStyleBackColor = true;
-            this.DownloadKeyAndIVDataFromUserFolderButton.Click += new System.EventHandler(this.DownloadKeyAndIVDataFromUserFolderButton_Click);
+            this.DownloadKeyAndIVDataFromUserPathButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.DownloadKeyAndIVDataFromUserPathButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.DownloadKeyAndIVDataFromUserPathButton.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.DownloadKeyAndIVDataFromUserPathButton.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.DownloadKeyAndIVDataFromUserPathButton.Location = new System.Drawing.Point(12, 276);
+            this.DownloadKeyAndIVDataFromUserPathButton.Name = "DownloadKeyAndIVDataFromUserPathButton";
+            this.DownloadKeyAndIVDataFromUserPathButton.Size = new System.Drawing.Size(772, 28);
+            this.DownloadKeyAndIVDataFromUserPathButton.TabIndex = 17;
+            this.DownloadKeyAndIVDataFromUserPathButton.Text = "Download existing Key and IV";
+            this.DownloadKeyAndIVDataFromUserPathButton.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.DownloadKeyAndIVDataFromUserPathButton.UseVisualStyleBackColor = true;
+            this.DownloadKeyAndIVDataFromUserPathButton.Click += new System.EventHandler(this.DownloadKeyAndIVDataFromUserPathButton_Click);
             // 
-            // SaveKeyAndIVDataOnUserFolderButton
+            // SaveKeyAndIVDataOnUserPathButton
             // 
-            this.SaveKeyAndIVDataOnUserFolderButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.SaveKeyAndIVDataOnUserFolderButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.SaveKeyAndIVDataOnUserFolderButton.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.SaveKeyAndIVDataOnUserFolderButton.Location = new System.Drawing.Point(12, 242);
-            this.SaveKeyAndIVDataOnUserFolderButton.Name = "SaveKeyAndIVDataOnUserFolderButton";
-            this.SaveKeyAndIVDataOnUserFolderButton.Size = new System.Drawing.Size(772, 28);
-            this.SaveKeyAndIVDataOnUserFolderButton.TabIndex = 18;
-            this.SaveKeyAndIVDataOnUserFolderButton.Text = "Save Current Key and IV";
-            this.SaveKeyAndIVDataOnUserFolderButton.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.SaveKeyAndIVDataOnUserFolderButton.UseVisualStyleBackColor = true;
-            this.SaveKeyAndIVDataOnUserFolderButton.Click += new System.EventHandler(this.SaveKeyAndIVDataOnUserFolderButton_Click);
+            this.SaveKeyAndIVDataOnUserPathButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.SaveKeyAndIVDataOnUserPathButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.SaveKeyAndIVDataOnUserPathButton.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.SaveKeyAndIVDataOnUserPathButton.Location = new System.Drawing.Point(12, 242);
+            this.SaveKeyAndIVDataOnUserPathButton.Name = "SaveKeyAndIVDataOnUserPathButton";
+            this.SaveKeyAndIVDataOnUserPathButton.Size = new System.Drawing.Size(772, 28);
+            this.SaveKeyAndIVDataOnUserPathButton.TabIndex = 18;
+            this.SaveKeyAndIVDataOnUserPathButton.Text = "Save Current Key and IV";
+            this.SaveKeyAndIVDataOnUserPathButton.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.SaveKeyAndIVDataOnUserPathButton.UseVisualStyleBackColor = true;
+            this.SaveKeyAndIVDataOnUserPathButton.Click += new System.EventHandler(this.SaveKeyAndIVDataOnUserPathButton_Click);
             // 
             // EncryptOrDecryptTextFromFileButton
             // 
@@ -227,31 +228,31 @@
             this.EncryptOrDecryptTextFromFileButton.UseVisualStyleBackColor = true;
             this.EncryptOrDecryptTextFromFileButton.Click += new System.EventHandler(this.EncryptOrDecryptTextFromFileButton_Click);
             // 
-            // CreateNewEncryptDataOnUserFolderButton
+            // CreateNewEncryptDataOnUserPathButton
             // 
-            this.CreateNewEncryptDataOnUserFolderButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.CreateNewEncryptDataOnUserFolderButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.CreateNewEncryptDataOnUserFolderButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.CreateNewEncryptDataOnUserFolderButton.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.CreateNewEncryptDataOnUserFolderButton.Location = new System.Drawing.Point(12, 310);
-            this.CreateNewEncryptDataOnUserFolderButton.Name = "CreateNewEncryptDataOnUserFolderButton";
-            this.CreateNewEncryptDataOnUserFolderButton.Size = new System.Drawing.Size(772, 28);
-            this.CreateNewEncryptDataOnUserFolderButton.TabIndex = 20;
-            this.CreateNewEncryptDataOnUserFolderButton.Text = "Create new Key and IV";
-            this.CreateNewEncryptDataOnUserFolderButton.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.CreateNewEncryptDataOnUserFolderButton.UseVisualStyleBackColor = true;
-            this.CreateNewEncryptDataOnUserFolderButton.Click += new System.EventHandler(this.CreateNewEncryptDataOnUserFolderButton_Click);
+            this.CreateNewEncryptDataOnUserPathButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.CreateNewEncryptDataOnUserPathButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.CreateNewEncryptDataOnUserPathButton.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.CreateNewEncryptDataOnUserPathButton.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.CreateNewEncryptDataOnUserPathButton.Location = new System.Drawing.Point(12, 310);
+            this.CreateNewEncryptDataOnUserPathButton.Name = "CreateNewEncryptDataOnUserPathButton";
+            this.CreateNewEncryptDataOnUserPathButton.Size = new System.Drawing.Size(772, 28);
+            this.CreateNewEncryptDataOnUserPathButton.TabIndex = 20;
+            this.CreateNewEncryptDataOnUserPathButton.Text = "Create new Key and IV";
+            this.CreateNewEncryptDataOnUserPathButton.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.CreateNewEncryptDataOnUserPathButton.UseVisualStyleBackColor = true;
+            this.CreateNewEncryptDataOnUserPathButton.Click += new System.EventHandler(this.CreateNewEncryptDataOnUserPathButton_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(791, 345);
-            this.Controls.Add(this.CreateNewEncryptDataOnUserFolderButton);
+            this.Controls.Add(this.CreateNewEncryptDataOnUserPathButton);
             this.Controls.Add(this.EncryptOrDecryptTextFromFileButton);
-            this.Controls.Add(this.SaveKeyAndIVDataOnUserFolderButton);
-            this.Controls.Add(this.DownloadKeyAndIVDataFromUserFolderButton);
-            this.Controls.Add(this.ChoiceOfPathToFileForEncryptButton);
+            this.Controls.Add(this.SaveKeyAndIVDataOnUserPathButton);
+            this.Controls.Add(this.DownloadKeyAndIVDataFromUserPathButton);
+            this.Controls.Add(this.GetPathToFileForEncryptButton);
             this.Controls.Add(this.AlgorithmChoiceGroupBox);
             this.Controls.Add(this.EncryptOrDecryptGroupBox);
             this.Controls.Add(this.PathInputTextBox);
@@ -285,12 +286,12 @@
         private System.Windows.Forms.RadioButton AES;
         private System.Windows.Forms.RadioButton Rijndael;
         private System.Windows.Forms.OpenFileDialog OpenFileDialog;
-        private System.Windows.Forms.Button ChoiceOfPathToFileForEncryptButton;
-        private System.Windows.Forms.Button DownloadKeyAndIVDataFromUserFolderButton;
-        private System.Windows.Forms.Button SaveKeyAndIVDataOnUserFolderButton;
+        private System.Windows.Forms.Button GetPathToFileForEncryptButton;
+        private System.Windows.Forms.Button DownloadKeyAndIVDataFromUserPathButton;
+        private System.Windows.Forms.Button SaveKeyAndIVDataOnUserPathButton;
         private System.Windows.Forms.SaveFileDialog SaveFileDialog;
         private System.Windows.Forms.Button EncryptOrDecryptTextFromFileButton;
-        private System.Windows.Forms.Button CreateNewEncryptDataOnUserFolderButton;
+        private System.Windows.Forms.Button CreateNewEncryptDataOnUserPathButton;
     }
 }
 
