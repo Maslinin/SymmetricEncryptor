@@ -5,6 +5,8 @@ namespace SymmetryEncoder.IOManager
 {
     sealed class EncodersIOServices
     {
+        public EncodersIOServices() { }
+
         /// <summary>
         /// Writes data for decryption to the specified path
         /// </summary>
