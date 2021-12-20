@@ -34,10 +34,7 @@ namespace SymmetryEncoder
         private void GetPathToFileForEncryptButton_Click(object sender, EventArgs e)
         {
             OpenFileDialog.Title = "Select Text File";
-            if (Encrypt.Checked)
-                OpenFileDialog.Filter = "Text File|*.txt|HTML Document|*.html|eBook|*.fb2;*.epub";
-            else
-                OpenFileDialog.Filter = "Text File|*.txt";
+            OpenFileDialog.Filter = Encrypt.Checked ? "Text File|*.txt|HTML Document|*.html|eBook|*.fb2;*.epub" : "Text File|*.txt";
 
             if (OpenFileDialog.ShowDialog() == DialogResult.OK)
             {
@@ -58,12 +55,7 @@ namespace SymmetryEncoder
                 else if(Rijndael.Checked && Symmetry as RijndaelEncoder == null)
                     Symmetry = new RijndaelEncoder();
 
-                string fileName = null;
-                if (Symmetry is AESEncoder)
-                    fileName = "AESEncryptionData.txt";
-                else if (Symmetry is RijndaelEncoder)
-                    fileName = "RijndaelEncryptionData.txt";
-
+                string fileName = Symmetry is AESEncoder ? "AESEncryptionData.txt" : "RijndaelEncryptionData.txt";
                 string filePath = null;
                 if (Encrypt.Checked) //encrypt text
                 {
