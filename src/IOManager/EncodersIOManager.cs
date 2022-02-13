@@ -3,17 +3,15 @@ using SymmetryEncoder.Encoders;
 
 namespace SymmetryEncoder.IOManager
 {
-    sealed class EncodersIOServices
+    static class EncodersIOManager
     {
-        public EncodersIOServices() { }
-
         /// <summary>
         /// Writes data for decryption to the specified path
         /// </summary>
         /// <param name="symmetry"></param>
         /// <param name="pathFolder"></param>
         /// <returns>Path to a new file containing data to decrypt</returns>
-        public string WriteKeyAndIVInFile(ISymmetry symmetry, string filePath)
+        public static string WriteKeyAndIVInFile(ISymmetry symmetry, string filePath)
         {
             using (var writer = new BinaryWriter(File.Create(filePath), System.Text.Encoding.UTF8))
             {
@@ -33,7 +31,7 @@ namespace SymmetryEncoder.IOManager
         /// <param name="symmetry"></param>
         /// <param name="filePath"></param>
         /// <returns>ISymmetry instance with new IV and Key</returns>
-        public ISymmetry ReadKeyAndIVFromFile(ISymmetry symmetry, string filePath)
+        public static ISymmetry ReadKeyAndIVFromFile(ISymmetry symmetry, string filePath)
         {
             using (var reader = new BinaryReader(File.OpenRead(filePath), System.Text.Encoding.UTF8))
             {

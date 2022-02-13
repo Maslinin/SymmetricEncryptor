@@ -9,12 +9,10 @@ namespace SymmetryEncoder
     sealed partial class MainForm : Form
     {
         private ISymmetry Symmetry { get; set; }
-        private EncodersIOServices IOServices { get; }
 
         public MainForm()
         {
             InitializeComponent();
-            IOServices = new EncodersIOServices();
 
             AES.Checked = true;
             Encrypt.Checked = true;
@@ -67,7 +65,7 @@ namespace SymmetryEncoder
 
                         File.WriteAllBytes(SaveFileDialog.FileName, encryptedBytes);
                         string dataFilePath = string.Concat(SaveFileDialog.FileName, '.', fileName);
-                        IOServices.WriteKeyAndIVInFile(Symmetry, dataFilePath);
+                        EncodersIOManager.WriteKeyAndIVInFile(Symmetry, dataFilePath);
                         MessageBox.Show($"Encrypted text was saved to file at {SaveFileDialog.FileName};" +
                             $"\ndata for decrypt was saved to file at {dataFilePath}",
                             "Encryption Complete",
@@ -119,7 +117,7 @@ namespace SymmetryEncoder
                 SaveFileDialog.Title = "Save Key and IV";
                 if (SaveFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    string filePath = IOServices.WriteKeyAndIVInFile(Symmetry, SaveFileDialog.FileName);
+                    string filePath = EncodersIOManager.WriteKeyAndIVInFile(Symmetry, SaveFileDialog.FileName);
                     MessageBox.Show($"Your Key and IV were saved successfully at {filePath}",
                         "Data Saved",
                         MessageBoxButtons.OK,
@@ -153,7 +151,7 @@ namespace SymmetryEncoder
                     else
                         Symmetry = new RijndaelEncoder();
 
-                    IOServices.ReadKeyAndIVFromFile(Symmetry, OpenFileDialog.FileName);
+                    EncodersIOManager.ReadKeyAndIVFromFile(Symmetry, OpenFileDialog.FileName);
                     MessageBox.Show("Your Key and IV were successfully downloaded",
                         "Data Loaded",
                         MessageBoxButtons.OK,
@@ -185,7 +183,7 @@ namespace SymmetryEncoder
                 else 
                     Symmetry = new RijndaelEncoder();
 
-                string filePath = IOServices.WriteKeyAndIVInFile(Symmetry, SaveFileDialog.FileName);
+                string filePath = EncodersIOManager.WriteKeyAndIVInFile(Symmetry, SaveFileDialog.FileName);
                 MessageBox.Show($"Your Key and IV were saved successfully at {filePath}",
                     "Data Saved",
                     MessageBoxButtons.OK,
