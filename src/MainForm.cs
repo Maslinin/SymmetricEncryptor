@@ -48,9 +48,9 @@ namespace SymmetryEncoder
                 if (!File.Exists(PathInputTextBox.Text)) 
                     throw new FileNotFoundException("The file on the path you specified does not exist!");
 
-                if (AES.Checked && Symmetry as AesEncoder is null)
+                if (AES.Checked && !(Symmetry is AesEncoder))
                     Symmetry = new AesEncoder();
-                else if(Rijndael.Checked && Symmetry as RijndaelEncoder is null)
+                else if(Rijndael.Checked && !(Symmetry is RijndaelEncoder))
                     Symmetry = new RijndaelEncoder();
 
                 string fileName = Symmetry is AesEncoder ? "AESEncryptionData.txt" : "RijndaelEncryptionData.txt";
@@ -110,7 +110,7 @@ namespace SymmetryEncoder
             try
             {
                 if (Symmetry is null)
-                    throw new ArgumentNullException("Current Key and IV are not installed in the program!");
+                    throw new NullReferenceException("Current Key and IV are not installed in the program!");
                 if ((AES.Checked && Symmetry is RijndaelEncoder) || (Rijndael.Checked && Symmetry is AesEncoder))
                     throw new FormatException("Key and IV cannot be saved because they belong to another encryption algorithm!");
                 
