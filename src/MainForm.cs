@@ -48,12 +48,12 @@ namespace SymmetryEncoder
                 if (!File.Exists(PathInputTextBox.Text)) 
                     throw new FileNotFoundException("The file on the path you specified does not exist!");
 
-                if (AES.Checked && Symmetry as AESEncoder == null)
-                    Symmetry = new AESEncoder();
-                else if(Rijndael.Checked && Symmetry as RijndaelEncoder == null)
+                if (AES.Checked && Symmetry as AesEncoder is null)
+                    Symmetry = new AesEncoder();
+                else if(Rijndael.Checked && Symmetry as RijndaelEncoder is null)
                     Symmetry = new RijndaelEncoder();
 
-                string fileName = Symmetry is AESEncoder ? "AESEncryptionData.txt" : "RijndaelEncryptionData.txt";
+                string fileName = Symmetry is AesEncoder ? "AESEncryptionData.txt" : "RijndaelEncryptionData.txt";
                 string filePath = null;
                 if (Encrypt.Checked) //encrypt text
                 {
@@ -109,9 +109,9 @@ namespace SymmetryEncoder
         {
             try
             {
-                if (Symmetry == null)
-                    throw new NullReferenceException("Current Key and IV are not installed in the program!");
-                if ((AES.Checked && Symmetry is RijndaelEncoder) || (Rijndael.Checked && Symmetry is AESEncoder))
+                if (Symmetry is null)
+                    throw new ArgumentNullException("Current Key and IV are not installed in the program!");
+                if ((AES.Checked && Symmetry is RijndaelEncoder) || (Rijndael.Checked && Symmetry is AesEncoder))
                     throw new FormatException("Key and IV cannot be saved because they belong to another encryption algorithm!");
                 
                 SaveFileDialog.Title = "Save Key and IV";
@@ -147,7 +147,7 @@ namespace SymmetryEncoder
                 if (OpenFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     if (AES.Checked)
-                        Symmetry = new AESEncoder();
+                        Symmetry = new AesEncoder();
                     else
                         Symmetry = new RijndaelEncoder();
 
@@ -178,8 +178,8 @@ namespace SymmetryEncoder
             {
                 EncryptedTextBox.Clear();
 
-                if (AES.Checked == true)
-                    Symmetry = new AESEncoder();
+                if (AES.Checked)
+                    Symmetry = new AesEncoder();
                 else 
                     Symmetry = new RijndaelEncoder();
 

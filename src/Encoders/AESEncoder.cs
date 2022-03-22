@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 
 namespace SymmetryEncoder.Encoders
 {
-    sealed class AESEncoder : ISymmetry
+    sealed class AesEncoder : ISymmetry
     {
         public byte[] IV { get; set; }
         public byte[] Key { get; set; }
@@ -11,7 +11,7 @@ namespace SymmetryEncoder.Encoders
         /// <summary>
         /// Initializes class instance with new IV and Key
         /// </summary>
-        public AESEncoder()
+        public AesEncoder()
         {
             var MyAES = Aes.Create();
             IV = MyAES.IV;
