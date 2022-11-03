@@ -15,10 +15,12 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      - name: Build of Solution
-        run: msbuild SymmetryEncoder.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile
+      - name: Build Solution
+        run: dotnet build --configuration Release
+      - name: Publish
+        run: dotnet publish
       - name: Upload Artifact
-        uses: actions/upload-artifact@v1.0.0
+        uses: actions/upload-artifact@v3
         with:
-          name: SymmetryEncoder
+          name: ChocolateyUtilsManager
           path: bin\Release
