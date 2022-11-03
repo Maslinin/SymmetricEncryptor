@@ -3,105 +3,75 @@ using System.IO;
 using System.Windows.Forms;
 using SymmetryEncoder.Encoders;
 using SymmetryEncoder.IOManager;
+using SymmetryEncoder.Exceptions;
 
 namespace SymmetryEncoder
 {
     sealed partial class MainForm : Form
     {
-        private ISymmetry Symmetry { get; set; }
+        private IEncoder _encoder;
+        private readonly FileManager _fileManager;
 
         public MainForm()
         {
             InitializeComponent();
 
-            AES.Checked = true;
-            Encrypt.Checked = true;
+            EncryptRadioButton.Checked = true;
+            AESRadioButton.Checked = true;
+            EncryptRadioButton.CheckedChanged += this.EncryptOrDecryptRadioButton_CheckedChanged;
+            DecryptRadioButton.CheckedChanged += this.EncryptOrDecryptRadioButton_CheckedChanged;
 
-            OpenFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
-            SaveFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
-            SaveFileDialog.Filter = "Text File|*.txt";
+            this.EncryptOrDecryptRadioButton_CheckedChanged(null, null);
 
-            Encrypt.CheckedChanged += EncryptOrDecryptRadioButton_CheckedChanged;
-            Decrypt.CheckedChanged += EncryptOrDecryptRadioButton_CheckedChanged;
-
-            InputPathTextLabel.Text = $"Enter the file path containing the text to {(Encrypt.Checked ? "encrypt" : "decrypt")}:";
-            EncryptDecryptTextLabel.Text = $"{(Encrypt.Checked ? "Encrypted" : "Decrypted")} text:";
-            EncryptOrDecryptTextFromFileButton.Text = Encrypt.Checked ? "Encrypt" : "Decrypt";
-        }
-
-        private void GetPathToFileForEncryptButton_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog.Title = "Select Text File";
-            OpenFileDialog.Filter = Encrypt.Checked ? "Text File|*.txt|HTML Document|*.html|eBook|*.fb2;*.epub" : "Text File|*.txt";
-
-            if (OpenFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                PathInputTextBox.Text = OpenFileDialog.FileName;
-            }
-            OpenFileDialog.Dispose();
+            this._fileManager = new FileManager();
+            this._encoder = EncoderFactory.CreateEncoder(this);
         }
 
         private void EncryptOrDecryptTextFromFileButton_Click(object sender, EventArgs e)
         {
             try
             {
-                if (!File.Exists(PathInputTextBox.Text)) 
-                    throw new FileNotFoundException("The file on the path you specified does not exist!");
+                if (AESRadioButton.Checked && this._encoder is not AesEncoder)
+                    this._encoder = EncoderFactory.CreateEncoder(this);
+                else if (RC2RadioButton.Checked && this._encoder is not RC2Encoder)
+                    this._encoder = EncoderFactory.CreateEncoder(this);
 
-                if (AES.Checked && !(Symmetry is AesEncoder))
-                    Symmetry = new AesEncoder();
-                else if(Rijndael.Checked && !(Symmetry is RijndaelEncoder))
-                    Symmetry = new RijndaelEncoder();
+                string openPathFromDialog = this._fileManager.OpenFileViaDialog();
+                if (openPathFromDialog is null)
+                    return;
 
-                string fileName = Symmetry is AesEncoder ? "AESEncryptionData.txt" : "RijndaelEncryptionData.txt";
-                string filePath = null;
-                if (Encrypt.Checked) //encrypt text
+                string savePathFromDialog = this._fileManager.SaveFileViaDialog();
+                if (savePathFromDialog is null)
+                    return;
+
+                if (EncryptRadioButton.Checked) //encrypt text
                 {
-                    SaveFileDialog.Title = "Select a file to save encrypted text";
-                    if (SaveFileDialog.ShowDialog() == DialogResult.OK)
-                    {
-                        //Encryption:
-                        var encryptedBytes = Symmetry.EncryptStringIntoBytes(File.ReadAllText(PathInputTextBox.Text));
+                    var encryptedBytes = this._encoder.EncryptText(File.ReadAllText(openPathFromDialog));
+                    File.WriteAllBytes(savePathFromDialog, encryptedBytes);
 
-                        File.WriteAllBytes(SaveFileDialog.FileName, encryptedBytes);
-                        string dataFilePath = string.Concat(SaveFileDialog.FileName, '.', fileName);
-                        EncodersIOManager.WriteKeyAndIVInFile(Symmetry, dataFilePath);
-                        MessageBox.Show($"Encrypted text was saved to file at {SaveFileDialog.FileName};" +
-                            $"\ndata for decrypt was saved to file at {dataFilePath}",
-                            "Encryption Complete",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Information);
+                    string dataFilePath = string.Concat(savePathFromDialog, ".EncryptionData");
+                    FileManager.WriteKeyAndIVInFile(this._encoder, dataFilePath);
 
-                        EncryptedTextBox.Text = System.Text.Encoding.Default.GetString(encryptedBytes);
-                    }
-                    SaveFileDialog.Dispose();
+                    MessageBox.Show($"The encrypted text was saved to a file at {savePathFromDialog};" +
+                        $"\nthe decryption data was saved to a file at {dataFilePath}",
+                        "Encryption Complete",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
                 }
                 else //decrypt text
                 {
-                    SaveFileDialog.Title = "Select a file to save decrypted text";
-                    if (SaveFileDialog.ShowDialog() == DialogResult.OK)
-                    {
-                        //Decryption:
-                        EncryptedTextBox.Text = Symmetry.DecryptStringFromBytes(File.ReadAllBytes(PathInputTextBox.Text));
+                    string decryptText = this._encoder.DecryptText(File.ReadAllBytes(openPathFromDialog));
 
-                        File.WriteAllText(SaveFileDialog.FileName, EncryptedTextBox.Text);
-                        MessageBox.Show($"Decrypted text was saved to file at {filePath}",
-                            "Decryption completed",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Information);
-                    }
-                    SaveFileDialog.Dispose();
+                    File.WriteAllText(savePathFromDialog, decryptText);
+                    MessageBox.Show($"Decrypted text was saved to file at {savePathFromDialog}",
+                        "Decryption completed",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
                 }
             }
-            catch (Exception Ex)
+            catch (Exception ex)
             {
-                MessageBox.Show(Ex.Message,
-                    Ex.GetType().Name,
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-
-                File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "log.txt"),
-                    Ex.ToString());
+                ExceptionDisplayer.DisplayException(ex);
             }
         }
 
@@ -109,31 +79,19 @@ namespace SymmetryEncoder
         {
             try
             {
-                if (Symmetry is null)
-                    throw new NullReferenceException("Current Key and IV are not installed in the program!");
-                if ((AES.Checked && Symmetry is RijndaelEncoder) || (Rijndael.Checked && Symmetry is AesEncoder))
-                    throw new FormatException("Key and IV cannot be saved because they belong to another encryption algorithm!");
-                
-                SaveFileDialog.Title = "Save Key and IV";
-                if (SaveFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    string filePath = EncodersIOManager.WriteKeyAndIVInFile(Symmetry, SaveFileDialog.FileName);
-                    MessageBox.Show($"Your Key and IV were saved successfully at {filePath}",
-                        "Data Saved",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
-                }
-                SaveFileDialog.Dispose();
-            }
-            catch (Exception Ex)
-            {
-                MessageBox.Show(Ex.Message,
-                    Ex.GetType().Name,
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                if ((AESRadioButton.Checked && this._encoder is RC2Encoder) || (RC2RadioButton.Checked && this._encoder is AesEncoder))
+                    throw new FormatException("The Key and IV cannot be saved as they are intended for a different encryption algorithm!");
 
-                File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "log.txt"),
-                    Ex.ToString());
+                string pathFromDialog = this._fileManager.SaveFileViaDialog();
+                if (pathFromDialog is not null)
+                {
+                    string filePath = FileManager.WriteKeyAndIVInFile(this._encoder, pathFromDialog);
+                    MessageBox.Show($"Your key and IV have been successfully saved in {filePath}", "Data Saved", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionDisplayer.DisplayException(ex);
             }
         }
 
@@ -141,65 +99,36 @@ namespace SymmetryEncoder
         {
             try
             {
-                OpenFileDialog.Filter = "Text file|*.txt";
-                OpenFileDialog.Title = "Select a file with Key and IV";
-
-                if (OpenFileDialog.ShowDialog() == DialogResult.OK)
+                string pathFromDialog = this._fileManager.OpenFileViaDialog();
+                if (pathFromDialog is not null)
                 {
-                    if (AES.Checked)
-                        Symmetry = new AesEncoder();
-                    else
-                        Symmetry = new RijndaelEncoder();
+                    this._encoder = EncoderFactory.CreateEncoder(this);
 
-                    EncodersIOManager.ReadKeyAndIVFromFile(Symmetry, OpenFileDialog.FileName);
-                    MessageBox.Show("Your Key and IV were successfully downloaded",
-                        "Data Loaded",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
+                    FileManager.ReadKeyAndIVFromFile(this._encoder, pathFromDialog);
+                    MessageBox.Show("Your Key and IV have been successfully uploaded", "Data Loaded", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-                OpenFileDialog.Dispose();
             }
-            catch (Exception Ex)
+            catch (Exception ex)
             {
-                MessageBox.Show(Ex.Message,
-                    Ex.GetType().Name,
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-
-                File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "log.txt"),
-                    Ex.ToString());
+                ExceptionDisplayer.DisplayException(ex);
             }
         }
 
         private void CreateNewEncryptDataOnUserPathButton_Click(object sender, EventArgs e)
         {
-            SaveFileDialog.Title = "Save New Key and IV";
-            if (SaveFileDialog.ShowDialog() == DialogResult.OK)
+            string pathFromDialog = this._fileManager.SaveFileViaDialog();
+            if (pathFromDialog is not null)
             {
-                EncryptedTextBox.Clear();
+                this._encoder = EncoderFactory.CreateEncoder(this);
 
-                if (AES.Checked)
-                    Symmetry = new AesEncoder();
-                else 
-                    Symmetry = new RijndaelEncoder();
-
-                string filePath = EncodersIOManager.WriteKeyAndIVInFile(Symmetry, SaveFileDialog.FileName);
-                MessageBox.Show($"Your Key and IV were saved successfully at {filePath}",
-                    "Data Saved",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
+                string filePath = FileManager.WriteKeyAndIVInFile(this._encoder, pathFromDialog);
+                MessageBox.Show($"Your key and IV have been successfully saved at {filePath}", "Data Saved", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-
-            SaveFileDialog.Dispose();
         }
 
         private void EncryptOrDecryptRadioButton_CheckedChanged(object sender, EventArgs e)
         {
-            EncryptedTextBox.Clear();
-            InputPathTextLabel.Text = $"Enter the file path containing the text to {(Encrypt.Checked ? "encrypt" : "decrypt")}:";
-            EncryptDecryptTextLabel.Text = $"{(Encrypt.Checked ? "Encrypted" : "Decrypted")} text:";
-            EncryptOrDecryptTextFromFileButton.Text = Encrypt.Checked ? "Encrypt" : "Decrypt";
+            EncryptOrDecryptTextButton.Text = $"{(EncryptRadioButton.Checked ? "Encrypt" : "Decrypt")} File";
         }
-        private void AlgorithmChoiceGroupBox_Click(object sender, EventArgs e) => EncryptedTextBox.Clear();
     }
 }

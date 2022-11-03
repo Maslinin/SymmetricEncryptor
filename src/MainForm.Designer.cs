@@ -20,6 +20,9 @@
             base.Dispose(disposing);
         }
 
+        internal System.Windows.Forms.RadioButton AESRadioButton;
+        internal System.Windows.Forms.RadioButton RC2RadioButton;
+
         #region Код, автоматически созданный конструктором форм Windows
 
         /// <summary>
@@ -29,157 +32,103 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.InputPathTextLabel = new System.Windows.Forms.Label();
-            this.EncryptDecryptTextLabel = new System.Windows.Forms.Label();
-            this.EncryptedTextBox = new System.Windows.Forms.TextBox();
-            this.PathInputTextBox = new System.Windows.Forms.TextBox();
-            this.Encrypt = new System.Windows.Forms.RadioButton();
-            this.Decrypt = new System.Windows.Forms.RadioButton();
+            this.EncryptRadioButton = new System.Windows.Forms.RadioButton();
+            this.DecryptRadioButton = new System.Windows.Forms.RadioButton();
             this.EncryptOrDecryptGroupBox = new System.Windows.Forms.GroupBox();
             this.AlgorithmChoiceGroupBox = new System.Windows.Forms.GroupBox();
-            this.AES = new System.Windows.Forms.RadioButton();
-            this.Rijndael = new System.Windows.Forms.RadioButton();
-            this.GetPathToFileForEncryptButton = new System.Windows.Forms.Button();
+            this.AESRadioButton = new System.Windows.Forms.RadioButton();
+            this.RC2RadioButton = new System.Windows.Forms.RadioButton();
             this.OpenFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.DownloadKeyAndIVDataFromUserPathButton = new System.Windows.Forms.Button();
             this.SaveKeyAndIVDataOnUserPathButton = new System.Windows.Forms.Button();
             this.SaveFileDialog = new System.Windows.Forms.SaveFileDialog();
-            this.EncryptOrDecryptTextFromFileButton = new System.Windows.Forms.Button();
+            this.EncryptOrDecryptTextButton = new System.Windows.Forms.Button();
             this.CreateNewEncryptDataOnUserPathButton = new System.Windows.Forms.Button();
             this.EncryptOrDecryptGroupBox.SuspendLayout();
             this.AlgorithmChoiceGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
-            // InputPathTextLabel
+            // EncryptRadioButton
             // 
-            this.InputPathTextLabel.AutoSize = true;
-            this.InputPathTextLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.InputPathTextLabel.Location = new System.Drawing.Point(12, 9);
-            this.InputPathTextLabel.Name = "InputPathTextLabel";
-            this.InputPathTextLabel.Size = new System.Drawing.Size(485, 20);
-            this.InputPathTextLabel.TabIndex = 1;
-            this.InputPathTextLabel.Text = "Enter the file path containing the text to encrypt/decrypt:";
+            this.EncryptRadioButton.AutoSize = true;
+            this.EncryptRadioButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.EncryptRadioButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.EncryptRadioButton.Location = new System.Drawing.Point(7, 25);
+            this.EncryptRadioButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.EncryptRadioButton.Name = "EncryptRadioButton";
+            this.EncryptRadioButton.Size = new System.Drawing.Size(91, 24);
+            this.EncryptRadioButton.TabIndex = 8;
+            this.EncryptRadioButton.TabStop = true;
+            this.EncryptRadioButton.Text = "Encrypt";
+            this.EncryptRadioButton.UseVisualStyleBackColor = true;
             // 
-            // EncryptDecryptTextLabel
+            // DecryptRadioButton
             // 
-            this.EncryptDecryptTextLabel.AutoSize = true;
-            this.EncryptDecryptTextLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.EncryptDecryptTextLabel.Location = new System.Drawing.Point(12, 64);
-            this.EncryptDecryptTextLabel.Name = "EncryptDecryptTextLabel";
-            this.EncryptDecryptTextLabel.Size = new System.Drawing.Size(233, 20);
-            this.EncryptDecryptTextLabel.TabIndex = 2;
-            this.EncryptDecryptTextLabel.Text = "Encrypted/Decrypted Text:";
-            // 
-            // EncryptedTextBox
-            // 
-            this.EncryptedTextBox.CausesValidation = false;
-            this.EncryptedTextBox.Cursor = System.Windows.Forms.Cursors.Default;
-            this.EncryptedTextBox.Location = new System.Drawing.Point(12, 86);
-            this.EncryptedTextBox.Multiline = true;
-            this.EncryptedTextBox.Name = "EncryptedTextBox";
-            this.EncryptedTextBox.ReadOnly = true;
-            this.EncryptedTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.EncryptedTextBox.Size = new System.Drawing.Size(648, 116);
-            this.EncryptedTextBox.TabIndex = 3;
-            // 
-            // PathInputTextBox
-            // 
-            this.PathInputTextBox.Location = new System.Drawing.Point(12, 39);
-            this.PathInputTextBox.Multiline = true;
-            this.PathInputTextBox.Name = "PathInputTextBox";
-            this.PathInputTextBox.ReadOnly = true;
-            this.PathInputTextBox.Size = new System.Drawing.Size(601, 25);
-            this.PathInputTextBox.TabIndex = 23;
-            // 
-            // Encrypt
-            // 
-            this.Encrypt.AutoSize = true;
-            this.Encrypt.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.Encrypt.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Encrypt.Location = new System.Drawing.Point(6, 22);
-            this.Encrypt.Name = "Encrypt";
-            this.Encrypt.Size = new System.Drawing.Size(91, 24);
-            this.Encrypt.TabIndex = 8;
-            this.Encrypt.TabStop = true;
-            this.Encrypt.Text = "Encrypt";
-            this.Encrypt.UseVisualStyleBackColor = true;
-            // 
-            // Decrypt
-            // 
-            this.Decrypt.AutoSize = true;
-            this.Decrypt.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.Decrypt.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Decrypt.Location = new System.Drawing.Point(6, 48);
-            this.Decrypt.Name = "Decrypt";
-            this.Decrypt.Size = new System.Drawing.Size(93, 24);
-            this.Decrypt.TabIndex = 9;
-            this.Decrypt.TabStop = true;
-            this.Decrypt.Text = "Decrypt";
-            this.Decrypt.UseVisualStyleBackColor = true;
+            this.DecryptRadioButton.AutoSize = true;
+            this.DecryptRadioButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.DecryptRadioButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.DecryptRadioButton.Location = new System.Drawing.Point(7, 55);
+            this.DecryptRadioButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.DecryptRadioButton.Name = "DecryptRadioButton";
+            this.DecryptRadioButton.Size = new System.Drawing.Size(93, 24);
+            this.DecryptRadioButton.TabIndex = 9;
+            this.DecryptRadioButton.TabStop = true;
+            this.DecryptRadioButton.Text = "Decrypt";
+            this.DecryptRadioButton.UseVisualStyleBackColor = true;
             // 
             // EncryptOrDecryptGroupBox
             // 
-            this.EncryptOrDecryptGroupBox.Controls.Add(this.Encrypt);
-            this.EncryptOrDecryptGroupBox.Controls.Add(this.Decrypt);
-            this.EncryptOrDecryptGroupBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.EncryptOrDecryptGroupBox.Location = new System.Drawing.Point(666, 125);
+            this.EncryptOrDecryptGroupBox.Controls.Add(this.EncryptRadioButton);
+            this.EncryptOrDecryptGroupBox.Controls.Add(this.DecryptRadioButton);
+            this.EncryptOrDecryptGroupBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.EncryptOrDecryptGroupBox.Location = new System.Drawing.Point(409, 99);
+            this.EncryptOrDecryptGroupBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.EncryptOrDecryptGroupBox.Name = "EncryptOrDecryptGroupBox";
-            this.EncryptOrDecryptGroupBox.Size = new System.Drawing.Size(118, 77);
+            this.EncryptOrDecryptGroupBox.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.EncryptOrDecryptGroupBox.Size = new System.Drawing.Size(120, 85);
             this.EncryptOrDecryptGroupBox.TabIndex = 14;
             this.EncryptOrDecryptGroupBox.TabStop = false;
             this.EncryptOrDecryptGroupBox.Text = "Mode";
             // 
             // AlgorithmChoiceGroupBox
             // 
-            this.AlgorithmChoiceGroupBox.Controls.Add(this.AES);
-            this.AlgorithmChoiceGroupBox.Controls.Add(this.Rijndael);
-            this.AlgorithmChoiceGroupBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.AlgorithmChoiceGroupBox.Location = new System.Drawing.Point(666, 37);
+            this.AlgorithmChoiceGroupBox.Controls.Add(this.AESRadioButton);
+            this.AlgorithmChoiceGroupBox.Controls.Add(this.RC2RadioButton);
+            this.AlgorithmChoiceGroupBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.AlgorithmChoiceGroupBox.Location = new System.Drawing.Point(409, 8);
+            this.AlgorithmChoiceGroupBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.AlgorithmChoiceGroupBox.Name = "AlgorithmChoiceGroupBox";
-            this.AlgorithmChoiceGroupBox.Size = new System.Drawing.Size(118, 82);
+            this.AlgorithmChoiceGroupBox.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.AlgorithmChoiceGroupBox.Size = new System.Drawing.Size(120, 85);
             this.AlgorithmChoiceGroupBox.TabIndex = 15;
             this.AlgorithmChoiceGroupBox.TabStop = false;
             this.AlgorithmChoiceGroupBox.Text = "Algorithm";
-            this.AlgorithmChoiceGroupBox.Enter += new System.EventHandler(this.AlgorithmChoiceGroupBox_Click);
             // 
-            // AES
+            // AESRadioButton
             // 
-            this.AES.AutoSize = true;
-            this.AES.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.AES.Location = new System.Drawing.Point(6, 23);
-            this.AES.Name = "AES";
-            this.AES.Size = new System.Drawing.Size(63, 24);
-            this.AES.TabIndex = 10;
-            this.AES.TabStop = true;
-            this.AES.Text = "AES";
-            this.AES.UseVisualStyleBackColor = true;
+            this.AESRadioButton.AutoSize = true;
+            this.AESRadioButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.AESRadioButton.Location = new System.Drawing.Point(7, 27);
+            this.AESRadioButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.AESRadioButton.Name = "AESRadioButton";
+            this.AESRadioButton.Size = new System.Drawing.Size(63, 24);
+            this.AESRadioButton.TabIndex = 10;
+            this.AESRadioButton.TabStop = true;
+            this.AESRadioButton.Text = "AES";
+            this.AESRadioButton.UseVisualStyleBackColor = true;
             // 
-            // Rijndael
+            // RC2RadioButton
             // 
-            this.Rijndael.AutoSize = true;
-            this.Rijndael.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.Rijndael.Location = new System.Drawing.Point(6, 49);
-            this.Rijndael.Name = "Rijndael";
-            this.Rijndael.Size = new System.Drawing.Size(95, 24);
-            this.Rijndael.TabIndex = 16;
-            this.Rijndael.TabStop = true;
-            this.Rijndael.Text = "Rijndael";
-            this.Rijndael.UseVisualStyleBackColor = true;
-            // 
-            // GetPathToFileForEncryptButton
-            // 
-            this.GetPathToFileForEncryptButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.GetPathToFileForEncryptButton.FlatAppearance.BorderSize = 2;
-            this.GetPathToFileForEncryptButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.GetPathToFileForEncryptButton.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.GetPathToFileForEncryptButton.Location = new System.Drawing.Point(619, 39);
-            this.GetPathToFileForEncryptButton.Name = "GetPathToFileForEncryptButton";
-            this.GetPathToFileForEncryptButton.Size = new System.Drawing.Size(41, 25);
-            this.GetPathToFileForEncryptButton.TabIndex = 23;
-            this.GetPathToFileForEncryptButton.Text = "...";
-            this.GetPathToFileForEncryptButton.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.GetPathToFileForEncryptButton.UseVisualStyleBackColor = true;
-            this.GetPathToFileForEncryptButton.Click += new System.EventHandler(this.GetPathToFileForEncryptButton_Click);
+            this.RC2RadioButton.AutoSize = true;
+            this.RC2RadioButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.RC2RadioButton.Location = new System.Drawing.Point(7, 57);
+            this.RC2RadioButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.RC2RadioButton.Name = "RC2RadioButton";
+            this.RC2RadioButton.Size = new System.Drawing.Size(63, 24);
+            this.RC2RadioButton.TabIndex = 16;
+            this.RC2RadioButton.TabStop = true;
+            this.RC2RadioButton.Text = "RC2";
+            this.RC2RadioButton.UseVisualStyleBackColor = true;
             // 
             // OpenFileDialog
             // 
@@ -188,14 +137,15 @@
             // DownloadKeyAndIVDataFromUserPathButton
             // 
             this.DownloadKeyAndIVDataFromUserPathButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.DownloadKeyAndIVDataFromUserPathButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.DownloadKeyAndIVDataFromUserPathButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.DownloadKeyAndIVDataFromUserPathButton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.DownloadKeyAndIVDataFromUserPathButton.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.DownloadKeyAndIVDataFromUserPathButton.Location = new System.Drawing.Point(12, 276);
+            this.DownloadKeyAndIVDataFromUserPathButton.Location = new System.Drawing.Point(13, 104);
+            this.DownloadKeyAndIVDataFromUserPathButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.DownloadKeyAndIVDataFromUserPathButton.Name = "DownloadKeyAndIVDataFromUserPathButton";
-            this.DownloadKeyAndIVDataFromUserPathButton.Size = new System.Drawing.Size(772, 28);
+            this.DownloadKeyAndIVDataFromUserPathButton.Size = new System.Drawing.Size(387, 32);
             this.DownloadKeyAndIVDataFromUserPathButton.TabIndex = 17;
-            this.DownloadKeyAndIVDataFromUserPathButton.Text = "Download existing Key and IV";
+            this.DownloadKeyAndIVDataFromUserPathButton.Text = "Upload an existing Key and IV";
             this.DownloadKeyAndIVDataFromUserPathButton.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.DownloadKeyAndIVDataFromUserPathButton.UseVisualStyleBackColor = true;
             this.DownloadKeyAndIVDataFromUserPathButton.Click += new System.EventHandler(this.DownloadKeyAndIVDataFromUserPathButton_Click);
@@ -203,94 +153,85 @@
             // SaveKeyAndIVDataOnUserPathButton
             // 
             this.SaveKeyAndIVDataOnUserPathButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.SaveKeyAndIVDataOnUserPathButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.SaveKeyAndIVDataOnUserPathButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.SaveKeyAndIVDataOnUserPathButton.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.SaveKeyAndIVDataOnUserPathButton.Location = new System.Drawing.Point(12, 242);
+            this.SaveKeyAndIVDataOnUserPathButton.Location = new System.Drawing.Point(13, 57);
+            this.SaveKeyAndIVDataOnUserPathButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.SaveKeyAndIVDataOnUserPathButton.Name = "SaveKeyAndIVDataOnUserPathButton";
-            this.SaveKeyAndIVDataOnUserPathButton.Size = new System.Drawing.Size(772, 28);
+            this.SaveKeyAndIVDataOnUserPathButton.Size = new System.Drawing.Size(388, 32);
             this.SaveKeyAndIVDataOnUserPathButton.TabIndex = 18;
-            this.SaveKeyAndIVDataOnUserPathButton.Text = "Save Current Key and IV";
+            this.SaveKeyAndIVDataOnUserPathButton.Text = "Save the current key and IV";
             this.SaveKeyAndIVDataOnUserPathButton.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.SaveKeyAndIVDataOnUserPathButton.UseVisualStyleBackColor = true;
             this.SaveKeyAndIVDataOnUserPathButton.Click += new System.EventHandler(this.SaveKeyAndIVDataOnUserPathButton_Click);
             // 
-            // EncryptOrDecryptTextFromFileButton
+            // EncryptOrDecryptTextButton
             // 
-            this.EncryptOrDecryptTextFromFileButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.EncryptOrDecryptTextFromFileButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.EncryptOrDecryptTextFromFileButton.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.EncryptOrDecryptTextFromFileButton.Location = new System.Drawing.Point(12, 208);
-            this.EncryptOrDecryptTextFromFileButton.Name = "EncryptOrDecryptTextFromFileButton";
-            this.EncryptOrDecryptTextFromFileButton.Size = new System.Drawing.Size(772, 28);
-            this.EncryptOrDecryptTextFromFileButton.TabIndex = 19;
-            this.EncryptOrDecryptTextFromFileButton.Text = "Encrypt/Decrypt";
-            this.EncryptOrDecryptTextFromFileButton.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.EncryptOrDecryptTextFromFileButton.UseVisualStyleBackColor = true;
-            this.EncryptOrDecryptTextFromFileButton.Click += new System.EventHandler(this.EncryptOrDecryptTextFromFileButton_Click);
+            this.EncryptOrDecryptTextButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.EncryptOrDecryptTextButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.EncryptOrDecryptTextButton.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.EncryptOrDecryptTextButton.Location = new System.Drawing.Point(13, 12);
+            this.EncryptOrDecryptTextButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.EncryptOrDecryptTextButton.Name = "EncryptOrDecryptTextButton";
+            this.EncryptOrDecryptTextButton.Size = new System.Drawing.Size(388, 32);
+            this.EncryptOrDecryptTextButton.TabIndex = 19;
+            this.EncryptOrDecryptTextButton.Text = "Encrypt/Decrypt File";
+            this.EncryptOrDecryptTextButton.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.EncryptOrDecryptTextButton.UseVisualStyleBackColor = true;
+            this.EncryptOrDecryptTextButton.Click += new System.EventHandler(this.EncryptOrDecryptTextFromFileButton_Click);
             // 
             // CreateNewEncryptDataOnUserPathButton
             // 
             this.CreateNewEncryptDataOnUserPathButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.CreateNewEncryptDataOnUserPathButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.CreateNewEncryptDataOnUserPathButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.CreateNewEncryptDataOnUserPathButton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.CreateNewEncryptDataOnUserPathButton.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.CreateNewEncryptDataOnUserPathButton.Location = new System.Drawing.Point(12, 310);
+            this.CreateNewEncryptDataOnUserPathButton.Location = new System.Drawing.Point(13, 151);
+            this.CreateNewEncryptDataOnUserPathButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.CreateNewEncryptDataOnUserPathButton.Name = "CreateNewEncryptDataOnUserPathButton";
-            this.CreateNewEncryptDataOnUserPathButton.Size = new System.Drawing.Size(772, 28);
+            this.CreateNewEncryptDataOnUserPathButton.Size = new System.Drawing.Size(387, 32);
             this.CreateNewEncryptDataOnUserPathButton.TabIndex = 20;
-            this.CreateNewEncryptDataOnUserPathButton.Text = "Create new Key and IV";
+            this.CreateNewEncryptDataOnUserPathButton.Text = "Create a new Key and IV";
             this.CreateNewEncryptDataOnUserPathButton.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.CreateNewEncryptDataOnUserPathButton.UseVisualStyleBackColor = true;
             this.CreateNewEncryptDataOnUserPathButton.Click += new System.EventHandler(this.CreateNewEncryptDataOnUserPathButton_Click);
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(791, 345);
+            this.ClientSize = new System.Drawing.Size(538, 193);
             this.Controls.Add(this.CreateNewEncryptDataOnUserPathButton);
-            this.Controls.Add(this.EncryptOrDecryptTextFromFileButton);
+            this.Controls.Add(this.EncryptOrDecryptTextButton);
             this.Controls.Add(this.SaveKeyAndIVDataOnUserPathButton);
             this.Controls.Add(this.DownloadKeyAndIVDataFromUserPathButton);
-            this.Controls.Add(this.GetPathToFileForEncryptButton);
             this.Controls.Add(this.AlgorithmChoiceGroupBox);
             this.Controls.Add(this.EncryptOrDecryptGroupBox);
-            this.Controls.Add(this.PathInputTextBox);
-            this.Controls.Add(this.EncryptedTextBox);
-            this.Controls.Add(this.EncryptDecryptTextLabel);
-            this.Controls.Add(this.InputPathTextLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Symmetry encoder";
+            this.Text = "Symmetry Encoder";
             this.EncryptOrDecryptGroupBox.ResumeLayout(false);
             this.EncryptOrDecryptGroupBox.PerformLayout();
             this.AlgorithmChoiceGroupBox.ResumeLayout(false);
             this.AlgorithmChoiceGroupBox.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.Label InputPathTextLabel;
-        private System.Windows.Forms.Label EncryptDecryptTextLabel;
-        private System.Windows.Forms.TextBox EncryptedTextBox;
-        private System.Windows.Forms.TextBox PathInputTextBox;
-        private System.Windows.Forms.RadioButton Encrypt;
-        private System.Windows.Forms.RadioButton Decrypt;
+        private System.Windows.Forms.RadioButton EncryptRadioButton;
+        private System.Windows.Forms.RadioButton DecryptRadioButton;
         private System.Windows.Forms.GroupBox EncryptOrDecryptGroupBox;
         private System.Windows.Forms.GroupBox AlgorithmChoiceGroupBox;
-        private System.Windows.Forms.RadioButton AES;
-        private System.Windows.Forms.RadioButton Rijndael;
         private System.Windows.Forms.OpenFileDialog OpenFileDialog;
-        private System.Windows.Forms.Button GetPathToFileForEncryptButton;
         private System.Windows.Forms.Button DownloadKeyAndIVDataFromUserPathButton;
         private System.Windows.Forms.Button SaveKeyAndIVDataOnUserPathButton;
         private System.Windows.Forms.SaveFileDialog SaveFileDialog;
-        private System.Windows.Forms.Button EncryptOrDecryptTextFromFileButton;
+        private System.Windows.Forms.Button EncryptOrDecryptTextButton;
         private System.Windows.Forms.Button CreateNewEncryptDataOnUserPathButton;
     }
 }

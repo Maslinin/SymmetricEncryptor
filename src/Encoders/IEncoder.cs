@@ -1,12 +1,14 @@
-﻿namespace SymmetryEncoder.Encoders
+﻿using System;
+
+namespace SymmetryEncoder.Encoders
 {
     /// <summary>
     /// Specifies the list of abstract members of the class that implements encryption
     /// </summary>
-    interface ISymmetry
+    interface IEncoder : IDisposable
     {
         /// <summary>
-        /// Symmetric Encryption Key
+        /// Encryption Key
         /// </summary>
         byte[] Key { get; set; }
         /// <summary>
@@ -17,16 +19,14 @@
         /// <summary>
         /// Encrypts text with a symmetric encryption algorithm
         /// </summary>
-        /// <param name="textForEncrypted"></param>
-        /// <param name="filePath"></param>
+        /// <param name="text"></param>
         /// <returns>Array consisting of encrypted bytes</returns>
-        byte[] EncryptStringIntoBytes(string textForEncrypted);
+        byte[] EncryptText(string text);
         /// <summary>
         /// Decrypts text encrypted by a symmetric encryption algorithm
         /// </summary>
         /// <param name="encryptedData"></param>
-        /// <param name="filePath"></param>
         /// <returns>Decrypted string</returns>
-        string DecryptStringFromBytes(byte[] encryptedData);
+        string DecryptText(byte[] encryptedData);
     }
 }
