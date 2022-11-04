@@ -13,26 +13,26 @@ namespace SymmetryEncoder.IOManagers
 
         public FileManager()
         {
-            _openFileDialog = new OpenFileDialog();
-            _saveFileDialog = new SaveFileDialog();
+            this._openFileDialog = new OpenFileDialog();
+            this._saveFileDialog = new SaveFileDialog();
 
             string initialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
-            _openFileDialog.InitialDirectory = initialDirectory;
-            _saveFileDialog.InitialDirectory = initialDirectory;
+            this._openFileDialog.InitialDirectory = initialDirectory;
+            this._saveFileDialog.InitialDirectory = initialDirectory;
 
             string filesFormats = "Text file|*.txt";
-            _openFileDialog.Filter = filesFormats;
-            _saveFileDialog.Filter = filesFormats;
+            this._openFileDialog.Filter = filesFormats;
+            this._saveFileDialog.Filter = filesFormats;
 
-            _openFileDialog.Title = "Select a text file";
-            _saveFileDialog.Title = "Select the file to save the data to";
+            this._openFileDialog.Title = "Select a text file";
+            this._saveFileDialog.Title = "Select the file to save the data to";
         }
 
         public string OpenFileViaDialog()
         {
-            if (_openFileDialog.ShowDialog() == DialogResult.OK)
+            if (this._openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                return _openFileDialog.FileName;
+                return this._openFileDialog.FileName;
             }
             else
             {
@@ -42,9 +42,9 @@ namespace SymmetryEncoder.IOManagers
 
         public string SaveFileViaDialog()
         {
-            if (_saveFileDialog.ShowDialog() == DialogResult.OK)
+            if (this._saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                return _saveFileDialog.FileName;
+                return this._saveFileDialog.FileName;
             }
             else
             {
