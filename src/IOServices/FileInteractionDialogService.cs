@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace SymmetryEncryptor.IOServices
+namespace SymmetricEncryptor.IOServices
 {
     sealed class FileInteractionDialogService
     {

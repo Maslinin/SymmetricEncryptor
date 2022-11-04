@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace SymmetryEncryptor.Encryptors
+namespace SymmetricEncryptor.Encryptors
 {
     internal static class EncryptorFactory
     {

@@ -2,7 +2,7 @@
 using System.Text;
 using System.Security.Cryptography;
 
-namespace SymmetryEncryptor.Encryptors
+namespace SymmetricEncryptor.Encryptors
 {
     internal class RC2Encryptor : IEncryptor
     {

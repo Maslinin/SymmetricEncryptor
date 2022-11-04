@@ -1,11 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Forms;
-using SymmetryEncryptor.Encryptors;
-using SymmetryEncryptor.IOServices;
-using SymmetryEncryptor.Exceptions;
+using SymmetricEncryptor.Encryptors;
+using SymmetricEncryptor.IOServices;
+using SymmetricEncryptor.Exceptions;
 
-namespace SymmetryEncryptor
+namespace SymmetricEncryptor
 {
     sealed partial class MainForm : Form
     {

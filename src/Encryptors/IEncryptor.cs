@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SymmetryEncryptor.Encryptors
+namespace SymmetricEncryptor.Encryptors
 {
     /// <summary>
     /// Specifies the list of abstract members of the class that implements encryption

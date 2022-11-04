@@ -1,4 +1,4 @@
-﻿namespace SymmetryEncryptor
+﻿namespace SymmetricEncryptor
 {
     sealed partial class MainForm
     {
@@ -213,7 +213,7 @@
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Symmetry Encryptor";
+            this.Text = "Symmetric Encryptor";
             this.EncryptOrDecryptGroupBox.ResumeLayout(false);
             this.EncryptOrDecryptGroupBox.PerformLayout();
             this.AlgorithmChoiceGroupBox.ResumeLayout(false);

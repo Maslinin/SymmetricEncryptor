@@ -1,8 +1,8 @@
 ﻿using System.IO;
 using System.Text;
-using SymmetryEncryptor.Encryptors;
+using SymmetricEncryptor.Encryptors;
 
-namespace SymmetryEncryptor.IOServices
+namespace SymmetricEncryptor.IOServices
 {
     internal static class CryptDataIOService
     {
