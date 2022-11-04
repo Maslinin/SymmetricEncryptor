@@ -2,28 +2,28 @@
 using System.Text;
 using System.Security.Cryptography;
 
-namespace SymmetryEncrypter.Encrypters
+namespace SymmetryEncryptor.Encryptors
 {
-    internal sealed class AESEncrypter : IEncrypter
+    internal class RC2Encryptor : IEncryptor
     {
-        private readonly Aes _aes;
+        private readonly RC2 _rc2;
 
         public byte[] Key { get; set; }
         public byte[] IV { get; set; }
 
-        public AESEncrypter()
+        public RC2Encryptor()
         {
-            this._aes = Aes.Create();
+            this._rc2 = RC2.Create();
 
-            this.Key = this._aes.Key;
-            this.IV = this._aes.IV;
+            this.Key = this._rc2.Key;
+            this.IV = this._rc2.IV;
         }
 
         public byte[] EncryptText(string text)
         {
             byte[] encryptedBytes;
 
-            var encryptor = this._aes.CreateEncryptor(this.Key, this.IV);
+            var encryptor = this._rc2.CreateEncryptor(this.Key, this.IV);
 
             using (var memoryStream = new MemoryStream())
             {
@@ -45,7 +45,7 @@ namespace SymmetryEncrypter.Encrypters
         {
             string decryptText;
 
-            var decryptor = this._aes.CreateDecryptor(this.Key, this.IV);
+            var decryptor = this._rc2.CreateDecryptor(this.Key, this.IV);
 
             using (var memoryStream = new MemoryStream(encryptedData))
             {
@@ -63,7 +63,7 @@ namespace SymmetryEncrypter.Encrypters
 
         public void Dispose()
         {
-            this._aes.Dispose();
+            this._rc2.Dispose();
         }
     }
 }

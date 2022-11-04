@@ -6,7 +6,6 @@
 	<UseWindowsForms>true</UseWindowsForms>
 	<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
 	<ApplicationIcon>icon.ico</ApplicationIcon>
-	<StartupObject>SymmetryEncrypter.Program</StartupObject>
 	<NeutralLanguage>en-US</NeutralLanguage>
   </PropertyGroup>
 

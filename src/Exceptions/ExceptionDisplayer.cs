@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace SymmetryEncrypter.Exceptions
+namespace SymmetryEncryptor.Exceptions
 {
     internal static class ExceptionDisplayer
     {

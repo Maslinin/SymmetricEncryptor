@@ -1,15 +1,15 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Forms;
-using SymmetryEncrypter.Encrypters;
-using SymmetryEncrypter.IOServices;
-using SymmetryEncrypter.Exceptions;
+using SymmetryEncryptor.Encryptors;
+using SymmetryEncryptor.IOServices;
+using SymmetryEncryptor.Exceptions;
 
-namespace SymmetryEncrypter
+namespace SymmetryEncryptor
 {
     sealed partial class MainForm : Form
     {
-        private IEncrypter _encrypter;
+        private IEncryptor _encryptor;
         private readonly FileInteractionDialogService _fileInteractionService;
 
         public MainForm()
@@ -24,17 +24,17 @@ namespace SymmetryEncrypter
             this.EncryptOrDecryptRadioButton_CheckedChanged(null, null);
 
             this._fileInteractionService = new FileInteractionDialogService();
-            this._encrypter = EncrypterFactory.CreateEncrypter(this);
+            this._encryptor = EncryptorFactory.CreateEncryptor(this);
         }
 
         private void EncryptOrDecryptTextFromFileButton_Click(object sender, EventArgs e)
         {
             try
             {
-                if (AESRadioButton.Checked && this._encrypter is not AESEncrypter)
-                    this._encrypter = EncrypterFactory.CreateEncrypter(this);
-                else if (RC2RadioButton.Checked && this._encrypter is not RC2Encrypter)
-                    this._encrypter = EncrypterFactory.CreateEncrypter(this);
+                if (AESRadioButton.Checked && this._encryptor is not AESEncryptor)
+                    this._encryptor = EncryptorFactory.CreateEncryptor(this);
+                else if (RC2RadioButton.Checked && this._encryptor is not RC2Encryptor)
+                    this._encryptor = EncryptorFactory.CreateEncryptor(this);
 
                 string openPathFromDialog = this._fileInteractionService.OpenFileViaDialog();
                 if (openPathFromDialog is null)
@@ -46,11 +46,11 @@ namespace SymmetryEncrypter
 
                 if (EncryptRadioButton.Checked)
                 {
-                    var encryptedBytes = this._encrypter.EncryptText(File.ReadAllText(openPathFromDialog));
+                    var encryptedBytes = this._encryptor.EncryptText(File.ReadAllText(openPathFromDialog));
                     File.WriteAllBytes(savePathFromDialog, encryptedBytes);
 
                     string dataFilePath = string.Concat(savePathFromDialog, ".EncryptionData");
-                    CryptDataIOService.WriteKeyAndIVToFile(this._encrypter, dataFilePath);
+                    CryptDataIOService.WriteKeyAndIVToFile(this._encryptor, dataFilePath);
 
                     MessageBox.Show($"The encrypted text was saved to a file at {savePathFromDialog};" +
                         $"\nthe decryption data was saved to a file at {dataFilePath}",
@@ -60,7 +60,7 @@ namespace SymmetryEncrypter
                 }
                 else
                 {
-                    string decryptText = this._encrypter.DecryptText(File.ReadAllBytes(openPathFromDialog));
+                    string decryptText = this._encryptor.DecryptText(File.ReadAllBytes(openPathFromDialog));
 
                     File.WriteAllText(savePathFromDialog, decryptText);
                     MessageBox.Show($"Decrypted text was saved to file at {savePathFromDialog}",
@@ -79,13 +79,13 @@ namespace SymmetryEncrypter
         {
             try
             {
-                if ((AESRadioButton.Checked && this._encrypter is RC2Encrypter) || (RC2RadioButton.Checked && this._encrypter is AESEncrypter))
+                if ((AESRadioButton.Checked && this._encryptor is RC2Encryptor) || (RC2RadioButton.Checked && this._encryptor is AESEncryptor))
                     throw new FormatException("The Key and IV cannot be saved as they are intended for a different encryption algorithm!");
 
                 string pathFromDialog = this._fileInteractionService.SaveFileViaDialog();
                 if (pathFromDialog is not null)
                 {
-                    CryptDataIOService.WriteKeyAndIVToFile(this._encrypter, pathFromDialog);
+                    CryptDataIOService.WriteKeyAndIVToFile(this._encryptor, pathFromDialog);
                     MessageBox.Show($"Your key and IV have been successfully saved in {pathFromDialog}", 
                         "Data Saved", 
                         MessageBoxButtons.OK, 
@@ -107,9 +107,9 @@ namespace SymmetryEncrypter
                 {
                     var enctyptionData = CryptDataIOService.ReadKeyAndIVFromFile(pathFromDialog);
 
-                    this._encrypter = EncrypterFactory.CreateEncrypter(this);
-                    this._encrypter.Key = enctyptionData.Item1;
-                    this._encrypter.IV = enctyptionData.Item2;
+                    this._encryptor = EncryptorFactory.CreateEncryptor(this);
+                    this._encryptor.Key = enctyptionData.Item1;
+                    this._encryptor.IV = enctyptionData.Item2;
 
                     MessageBox.Show("Your Key and IV have been successfully uploaded", 
                         "Data Loaded", 
@@ -128,9 +128,9 @@ namespace SymmetryEncrypter
             string pathFromDialog = this._fileInteractionService.SaveFileViaDialog();
             if (pathFromDialog is not null)
             {
-                this._encrypter = EncrypterFactory.CreateEncrypter(this);
+                this._encryptor = EncryptorFactory.CreateEncryptor(this);
 
-                CryptDataIOService.WriteKeyAndIVToFile(this._encrypter, pathFromDialog);
+                CryptDataIOService.WriteKeyAndIVToFile(this._encryptor, pathFromDialog);
                 MessageBox.Show($"Your key and IV have been successfully saved at {pathFromDialog}", 
                     "Data Saved", 
                     MessageBoxButtons.OK, 

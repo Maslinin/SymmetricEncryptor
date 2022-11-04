@@ -1,20 +1,20 @@
 ﻿using System.IO;
 using System.Text;
-using SymmetryEncrypter.Encrypters;
+using SymmetryEncryptor.Encryptors;
 
-namespace SymmetryEncrypter.IOServices
+namespace SymmetryEncryptor.IOServices
 {
     internal static class CryptDataIOService
     {
-        public static void WriteKeyAndIVToFile(IEncrypter encrypter, string filePath)
+        public static void WriteKeyAndIVToFile(IEncryptor encryptor, string filePath)
         {
             using (var writer = new BinaryWriter(File.Create(filePath), Encoding.UTF8))
             {
-                writer.Write(encrypter.Key.Length);
-                writer.Write(encrypter.Key);
+                writer.Write(encryptor.Key.Length);
+                writer.Write(encryptor.Key);
 
-                writer.Write(encrypter.IV.Length);
-                writer.Write(encrypter.IV);
+                writer.Write(encryptor.IV.Length);
+                writer.Write(encryptor.IV);
             }
         }
 
