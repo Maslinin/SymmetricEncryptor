@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace SymmetricEncryptor.IOServices
 {
-    sealed class FileInteractionDialogService
+    internal sealed class FileInteractionDialogService
     {
         private readonly OpenFileDialog _openFileDialog;
         private readonly SaveFileDialog _saveFileDialog;

@@ -7,7 +7,7 @@ using SymmetricEncryptor.Exceptions;
 
 namespace SymmetricEncryptor
 {
-    sealed partial class MainForm : Form
+    internal sealed partial class MainForm : Form
     {
         private IEncryptor _encryptor;
         private readonly FileInteractionDialogService _fileInteractionService;

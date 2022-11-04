@@ -1,6 +1,6 @@
 ﻿namespace SymmetricEncryptor
 {
-    sealed partial class MainForm
+    internal sealed partial class MainForm
     {
         /// <summary>
         /// Обязательная переменная конструктора.
