@@ -22,5 +22,5 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: SymmetryEncoder
+          name: SymmetryEncryptor
           path: bin\Release
