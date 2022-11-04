@@ -2,16 +2,16 @@
 using System.Text;
 using System.Security.Cryptography;
 
-namespace SymmetryEncoder.Encoders
+namespace SymmetryEncrypter.Encrypters
 {
-    internal sealed class AesEncoder : IEncoder
+    internal sealed class AESEncrypter : IEncrypter
     {
         private readonly Aes _aes;
 
         public byte[] Key { get; set; }
         public byte[] IV { get; set; }
 
-        public AesEncoder()
+        public AESEncrypter()
         {
             this._aes = Aes.Create();
 

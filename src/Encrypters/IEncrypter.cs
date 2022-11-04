@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace SymmetryEncoder.Encoders
+namespace SymmetryEncrypter.Encrypters
 {
     /// <summary>
     /// Specifies the list of abstract members of the class that implements encryption
     /// </summary>
-    interface IEncoder : IDisposable
+    interface IEncrypter : IDisposable
     {
         /// <summary>
         /// Encryption Key

@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace SymmetryEncoder
+namespace SymmetryEncrypter
 {
     static class Program
     {

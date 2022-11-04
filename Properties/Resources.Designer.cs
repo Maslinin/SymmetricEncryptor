@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SymmetryEncoder.Properties {
+namespace SymmetryEncrypter.Properties {
     using System;
     
     

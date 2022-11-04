@@ -2,16 +2,16 @@
 using System.Text;
 using System.Security.Cryptography;
 
-namespace SymmetryEncoder.Encoders
+namespace SymmetryEncrypter.Encrypters
 {
-    internal class RC2Encoder : IEncoder
+    internal class RC2Encrypter : IEncrypter
     {
         private readonly RC2 _rc2;
 
         public byte[] Key { get; set; }
         public byte[] IV { get; set; }
 
-        public RC2Encoder()
+        public RC2Encrypter()
         {
             this._rc2 = RC2.Create();
 

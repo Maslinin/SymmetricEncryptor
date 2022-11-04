@@ -1,17 +1,14 @@
 ﻿using System;
-using System.IO;
-using System.Text;
 using System.Windows.Forms;
-using SymmetryEncoder.Encoders;
 
-namespace SymmetryEncoder.IOManagers
+namespace SymmetryEncrypter.IOServices
 {
-    sealed class FileManager
+    sealed class FileInteractionDialogService
     {
         private readonly OpenFileDialog _openFileDialog;
         private readonly SaveFileDialog _saveFileDialog;
 
-        public FileManager()
+        public FileInteractionDialogService()
         {
             this._openFileDialog = new OpenFileDialog();
             this._saveFileDialog = new SaveFileDialog();
@@ -52,34 +49,5 @@ namespace SymmetryEncoder.IOManagers
             }
         }
 
-        public static string WriteKeyAndIVToFile(IEncoder symmetry, string filePath)
-        {
-            using (var writer = new BinaryWriter(File.Create(filePath), Encoding.UTF8))
-            {
-                writer.Write(symmetry.Key.Length);
-                writer.Write(symmetry.Key);
-
-                writer.Write(symmetry.IV.Length);
-                writer.Write(symmetry.IV);
-            }
-
-            return filePath;
-        }
-
-        public static (byte[], byte[]) ReadKeyAndIVFromFile(string filePath)
-        {
-            byte[] key, iv;
-
-            using (var reader = new BinaryReader(File.OpenRead(filePath), Encoding.UTF8))
-            {
-                int length = reader.ReadInt32();
-                key = reader.ReadBytes(length);
-
-                length = reader.ReadInt32();
-                iv = reader.ReadBytes(length);
-            }
-
-            return (key, iv);
-        }
     }
 }
