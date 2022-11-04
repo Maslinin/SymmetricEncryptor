@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace SymmetricEncryptor.Exceptions
 {
-    internal static class ExceptionDisplayer
+    internal static class ExceptionDisplay
     {
         public static void DisplayException(Exception ex)
         {

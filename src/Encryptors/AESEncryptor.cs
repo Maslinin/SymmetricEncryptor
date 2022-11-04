@@ -65,5 +65,6 @@ namespace SymmetricEncryptor.Encryptors
         {
             this._aes.Dispose();
         }
+
     }
 }

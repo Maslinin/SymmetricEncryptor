@@ -71,7 +71,7 @@ namespace SymmetricEncryptor
             }
             catch (Exception ex)
             {
-                ExceptionDisplayer.DisplayException(ex);
+                ExceptionDisplay.DisplayException(ex);
             }
         }
 
@@ -94,7 +94,7 @@ namespace SymmetricEncryptor
             }
             catch (Exception ex)
             {
-                ExceptionDisplayer.DisplayException(ex);
+                ExceptionDisplay.DisplayException(ex);
             }
         }
 
@@ -119,7 +119,7 @@ namespace SymmetricEncryptor
             }
             catch (Exception ex)
             {
-                ExceptionDisplayer.DisplayException(ex);
+                ExceptionDisplay.DisplayException(ex);
             }
         }
 
@@ -142,5 +142,6 @@ namespace SymmetricEncryptor
         {
             EncryptOrDecryptTextButton.Text = $"{(EncryptRadioButton.Checked ? "Encrypt" : "Decrypt")} File";
         }
+
     }
 }

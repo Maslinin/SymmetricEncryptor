@@ -65,5 +65,6 @@ namespace SymmetricEncryptor.Encryptors
         {
             this._rc2.Dispose();
         }
+
     }
 }
