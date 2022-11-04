@@ -2,7 +2,7 @@
 using System.IO;
 using System.Windows.Forms;
 using SymmetryEncoder.Encoders;
-using SymmetryEncoder.IOManager;
+using SymmetryEncoder.IOManagers;
 using SymmetryEncoder.Exceptions;
 
 namespace SymmetryEncoder
@@ -50,7 +50,7 @@ namespace SymmetryEncoder
                     File.WriteAllBytes(savePathFromDialog, encryptedBytes);
 
                     string dataFilePath = string.Concat(savePathFromDialog, ".EncryptionData");
-                    FileManager.WriteKeyAndIVInFile(this._encoder, dataFilePath);
+                    FileManager.WriteKeyAndIVToFile(this._encoder, dataFilePath);
 
                     MessageBox.Show($"The encrypted text was saved to a file at {savePathFromDialog};" +
                         $"\nthe decryption data was saved to a file at {dataFilePath}",
@@ -85,7 +85,7 @@ namespace SymmetryEncoder
                 string pathFromDialog = this._fileManager.SaveFileViaDialog();
                 if (pathFromDialog is not null)
                 {
-                    string filePath = FileManager.WriteKeyAndIVInFile(this._encoder, pathFromDialog);
+                    string filePath = FileManager.WriteKeyAndIVToFile(this._encoder, pathFromDialog);
                     MessageBox.Show($"Your key and IV have been successfully saved in {filePath}", "Data Saved", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
@@ -102,9 +102,12 @@ namespace SymmetryEncoder
                 string pathFromDialog = this._fileManager.OpenFileViaDialog();
                 if (pathFromDialog is not null)
                 {
-                    this._encoder = EncoderFactory.CreateEncoder(this);
+                    var enctyptionData = FileManager.ReadKeyAndIVFromFile(pathFromDialog);
 
-                    FileManager.ReadKeyAndIVFromFile(this._encoder, pathFromDialog);
+                    this._encoder = EncoderFactory.CreateEncoder(this);
+                    this._encoder.Key = enctyptionData.Item1;
+                    this._encoder.IV = enctyptionData.Item2;
+
                     MessageBox.Show("Your Key and IV have been successfully uploaded", "Data Loaded", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
@@ -121,7 +124,7 @@ namespace SymmetryEncoder
             {
                 this._encoder = EncoderFactory.CreateEncoder(this);
 
-                string filePath = FileManager.WriteKeyAndIVInFile(this._encoder, pathFromDialog);
+                string filePath = FileManager.WriteKeyAndIVToFile(this._encoder, pathFromDialog);
                 MessageBox.Show($"Your key and IV have been successfully saved at {filePath}", "Data Saved", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }

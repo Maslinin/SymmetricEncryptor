@@ -4,7 +4,6 @@ namespace SymmetryEncoder.Encoders
 {
     internal static class EncoderFactory
     {
-
         public static IEncoder CreateEncoder(MainForm mainForm)
         {
             if (mainForm.AESRadioButton.Checked)

@@ -4,7 +4,7 @@ using System.Text;
 using System.Windows.Forms;
 using SymmetryEncoder.Encoders;
 
-namespace SymmetryEncoder.IOManager
+namespace SymmetryEncoder.IOManagers
 {
     sealed class FileManager
     {
@@ -13,26 +13,26 @@ namespace SymmetryEncoder.IOManager
 
         public FileManager()
         {
-            this._openFileDialog = new OpenFileDialog();
-            this._saveFileDialog = new SaveFileDialog();
+            _openFileDialog = new OpenFileDialog();
+            _saveFileDialog = new SaveFileDialog();
 
             string initialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
-            this._openFileDialog.InitialDirectory = initialDirectory;
-            this._saveFileDialog.InitialDirectory = initialDirectory;
+            _openFileDialog.InitialDirectory = initialDirectory;
+            _saveFileDialog.InitialDirectory = initialDirectory;
 
             string filesFormats = "Text file|*.txt";
-            this._openFileDialog.Filter = filesFormats;
-            this._saveFileDialog.Filter = filesFormats;
+            _openFileDialog.Filter = filesFormats;
+            _saveFileDialog.Filter = filesFormats;
 
-            this._openFileDialog.Title = "Select a text file";
-            this._saveFileDialog.Title = "Select the file to save the data to";
+            _openFileDialog.Title = "Select a text file";
+            _saveFileDialog.Title = "Select the file to save the data to";
         }
 
         public string OpenFileViaDialog()
         {
-            if (this._openFileDialog.ShowDialog() == DialogResult.OK)
+            if (_openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                return this._openFileDialog.FileName;
+                return _openFileDialog.FileName;
             }
             else
             {
@@ -42,9 +42,9 @@ namespace SymmetryEncoder.IOManager
 
         public string SaveFileViaDialog()
         {
-            if (this._saveFileDialog.ShowDialog() == DialogResult.OK)
+            if (_saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                return this._saveFileDialog.FileName;
+                return _saveFileDialog.FileName;
             }
             else
             {
@@ -52,7 +52,7 @@ namespace SymmetryEncoder.IOManager
             }
         }
 
-        public static string WriteKeyAndIVInFile(IEncoder symmetry, string filePath)
+        public static string WriteKeyAndIVToFile(IEncoder symmetry, string filePath)
         {
             using (var writer = new BinaryWriter(File.Create(filePath), Encoding.UTF8))
             {
@@ -66,18 +66,20 @@ namespace SymmetryEncoder.IOManager
             return filePath;
         }
 
-        public static IEncoder ReadKeyAndIVFromFile(IEncoder symmetry, string filePath)
+        public static (byte[], byte[]) ReadKeyAndIVFromFile(string filePath)
         {
+            byte[] key, iv;
+
             using (var reader = new BinaryReader(File.OpenRead(filePath), Encoding.UTF8))
             {
                 int length = reader.ReadInt32();
-                symmetry.Key = reader.ReadBytes(length);
+                key = reader.ReadBytes(length);
 
                 length = reader.ReadInt32();
-                symmetry.IV = reader.ReadBytes(length);
+                iv = reader.ReadBytes(length);
             }
 
-            return symmetry;
+            return (key, iv);
         }
     }
 }
