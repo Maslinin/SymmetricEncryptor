@@ -7,7 +7,7 @@ namespace SymmetricEncryptor.Encryptors
         public static IEncryptor CreateEncryptor(MainForm mainForm)
         {
             if (mainForm.AESRadioButton.Checked)
-                return new AESEncryptor();
+                return new AesEncryptor();
             else
                 return new RC2Encryptor();
         }

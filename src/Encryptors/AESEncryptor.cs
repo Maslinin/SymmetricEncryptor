@@ -4,14 +4,14 @@ using System.Security.Cryptography;
 
 namespace SymmetricEncryptor.Encryptors
 {
-    internal sealed class AESEncryptor : IEncryptor
+    internal sealed class AesEncryptor : IEncryptor
     {
         private readonly Aes _aes;
 
         public byte[] Key { get; set; }
         public byte[] IV { get; set; }
 
-        public AESEncryptor()
+        public AesEncryptor()
         {
             this._aes = Aes.Create();
 

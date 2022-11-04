@@ -31,7 +31,7 @@ namespace SymmetricEncryptor
         {
             try
             {
-                if (AESRadioButton.Checked && this._encryptor is not AESEncryptor)
+                if (AESRadioButton.Checked && this._encryptor is not AesEncryptor)
                     this._encryptor = EncryptorFactory.CreateEncryptor(this);
                 else if (RC2RadioButton.Checked && this._encryptor is not RC2Encryptor)
                     this._encryptor = EncryptorFactory.CreateEncryptor(this);
@@ -79,7 +79,7 @@ namespace SymmetricEncryptor
         {
             try
             {
-                if ((AESRadioButton.Checked && this._encryptor is RC2Encryptor) || (RC2RadioButton.Checked && this._encryptor is AESEncryptor))
+                if ((AESRadioButton.Checked && this._encryptor is RC2Encryptor) || (RC2RadioButton.Checked && this._encryptor is AesEncryptor))
                     throw new FormatException("The Key and IV cannot be saved as they are intended for a different encryption algorithm!");
 
                 string pathFromDialog = this._fileInteractionService.SaveFileViaDialog();

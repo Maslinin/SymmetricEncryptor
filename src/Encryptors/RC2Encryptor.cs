@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 
 namespace SymmetricEncryptor.Encryptors
 {
-    internal class RC2Encryptor : IEncryptor
+    internal sealed class RC2Encryptor : IEncryptor
     {
         private readonly RC2 _rc2;
 
