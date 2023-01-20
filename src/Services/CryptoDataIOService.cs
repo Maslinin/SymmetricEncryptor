@@ -2,9 +2,9 @@
 using System.Text;
 using SymmetricEncryptor.Encryptors;
 
-namespace SymmetricEncryptor.IOServices
+namespace SymmetricEncryptor.Services
 {
-    internal static class CryptDataIOService
+    internal static class CryptoDataIOService
     {
         public static void WriteKeyAndIVToFile(IEncryptor encryptor, string filePath)
         {
@@ -18,7 +18,7 @@ namespace SymmetricEncryptor.IOServices
             }
         }
 
-        public static (byte[], byte[]) ReadKeyAndIVFromFile(string filePath)
+        public static (byte[] Key, byte[] IV) ReadKeyAndIVFromFile(string filePath)
         {
             byte[] key, iv;
 

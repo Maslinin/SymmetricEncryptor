@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Forms;
+using SymmetricEncryptor.Services;
 using SymmetricEncryptor.Encryptors;
-using SymmetricEncryptor.IOServices;
 using SymmetricEncryptor.Exceptions;
 
 namespace SymmetricEncryptor
@@ -16,8 +16,8 @@ namespace SymmetricEncryptor
         {
             InitializeComponent();
 
-            EncryptRadioButton.Checked = true;
             AESRadioButton.Checked = true;
+            EncryptRadioButton.Checked = true;
             EncryptRadioButton.CheckedChanged += this.EncryptOrDecryptRadioButton_CheckedChanged;
             DecryptRadioButton.CheckedChanged += this.EncryptOrDecryptRadioButton_CheckedChanged;
 
@@ -50,7 +50,7 @@ namespace SymmetricEncryptor
                     File.WriteAllBytes(savePathFromDialog, encryptedBytes);
 
                     string dataFilePath = string.Concat(savePathFromDialog, ".EncryptionData");
-                    CryptDataIOService.WriteKeyAndIVToFile(this._encryptor, dataFilePath);
+                    CryptoDataIOService.WriteKeyAndIVToFile(this._encryptor, dataFilePath);
 
                     MessageBox.Show($"The encrypted text was saved to a file at {savePathFromDialog};" +
                         $"\nthe decryption data was saved to a file at {dataFilePath}",
@@ -85,7 +85,7 @@ namespace SymmetricEncryptor
                 string pathFromDialog = this._fileInteractionService.SaveFileViaDialog();
                 if (pathFromDialog is not null)
                 {
-                    CryptDataIOService.WriteKeyAndIVToFile(this._encryptor, pathFromDialog);
+                    CryptoDataIOService.WriteKeyAndIVToFile(this._encryptor, pathFromDialog);
                     MessageBox.Show($"Your key and IV have been successfully saved in {pathFromDialog}", 
                         "Data Saved", 
                         MessageBoxButtons.OK, 
@@ -105,11 +105,11 @@ namespace SymmetricEncryptor
                 string pathFromDialog = this._fileInteractionService.OpenFileViaDialog();
                 if (pathFromDialog is not null)
                 {
-                    var enctyptionData = CryptDataIOService.ReadKeyAndIVFromFile(pathFromDialog);
+                    var (Key, IV) = CryptoDataIOService.ReadKeyAndIVFromFile(pathFromDialog);
 
                     this._encryptor = EncryptorFactory.CreateEncryptor(this);
-                    this._encryptor.Key = enctyptionData.Item1;
-                    this._encryptor.IV = enctyptionData.Item2;
+                    this._encryptor.Key = Key;
+                    this._encryptor.IV = IV;
 
                     MessageBox.Show("Your Key and IV have been successfully uploaded", 
                         "Data Loaded", 
@@ -130,7 +130,7 @@ namespace SymmetricEncryptor
             {
                 this._encryptor = EncryptorFactory.CreateEncryptor(this);
 
-                CryptDataIOService.WriteKeyAndIVToFile(this._encryptor, pathFromDialog);
+                CryptoDataIOService.WriteKeyAndIVToFile(this._encryptor, pathFromDialog);
                 MessageBox.Show($"Your key and IV have been successfully saved at {pathFromDialog}", 
                     "Data Saved", 
                     MessageBoxButtons.OK, 
